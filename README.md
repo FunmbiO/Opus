@@ -23,9 +23,9 @@ See `docs/SETUP.md`. In short: Anthropic API key (set a Console spend limit), Go
 Target low $20s a month; alert at $100 (Telegram/console). Per-run cap $0.25, hard stop at $100. Triage uses Haiku, drafts use Sonnet, bulk senders are sorted by rules for free.
 
 ## Design
-The dashboard uses the Obsidian Pop palette: near-black ground, gold for the main action, and small sharp-edged pops for signals. See [docs/design/obsidian-pop.md](docs/design/obsidian-pop.md).
+The dashboard follows the NitroDrp style: terminal-flavoured, near-black with a dot grid, orange actions, lime highlights and hard offset shadows. See [docs/design/nitrodrp-style.md](docs/design/nitrodrp-style.md). The earlier [Obsidian Pop](docs/design/obsidian-pop.md) palette is superseded.
 
-![Opus dashboard](docs/design/screens/today.png)
+![Opus dashboard](docs/design/screens/nd-today.png)
 
 ## Layout
 - `agent/` the agent, API server, SQLite. `src/tools.ts` is the complete list of what the model may do.

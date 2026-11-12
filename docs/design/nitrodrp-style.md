@@ -26,3 +26,18 @@ ground `#E9E8E3`, surface `#F7F7F4`, ink `#111111`, accent `#D63A12`, marker `#C
 - Primary buttons: accent fill, dark text, 2px ink border, `4px 4px 0` pink shadow. Secondary: surface fill, lime text.
 - Inputs and chips: 4px radius, 2px ink border.
 - Lime means done or healthy. Orange means act or progress. Pink is only ever a shadow.
+
+## Screens
+| Today | Subscriptions |
+|---|---|
+| ![Today](screens/nd-today.png) | ![Subscriptions](screens/nd-subscriptions.png) |
+
+| Ask | Light theme |
+|---|---|
+| ![Ask](screens/nd-ask.png) | ![Light](screens/nd-light.png) |
+
+Mobile: ![Mobile](screens/nd-mobile.png)
+
+## Where it lives
+Tokens are at the top of `dashboard/src/styles.css`; the "NitroDrp style" section at the bottom holds the component rules.
+The earlier [Obsidian Pop](obsidian-pop.md) palette is superseded by this style.
