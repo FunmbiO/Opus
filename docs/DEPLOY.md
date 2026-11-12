@@ -31,6 +31,7 @@ once it has been checked.
 | `docker-compose.yml` is valid and renders as intended | `docker compose config` (no ports, shared network, `cap_drop: ALL`, three volumes, missing Tailscale key fails loudly) |
 | `agent/.env` cannot override `HOST`, `PORT` or the key folder | rendered with a hostile `HOST=0.0.0.0` in `agent/.env`: still `127.0.0.1` |
 | The safety rules hold | `npm run check:deploy`, tested by breaking each rule on purpose (14 cases, all caught) |
+| The agent starts from a fresh `npm ci`, as the image does | installed into an empty folder with `NODE_ENV=production`, reproduced a real failure (`tsx` missing), fixed, then ran the exact start command and healthcheck |
 | The dashboard build stage works in isolation | reproduced a real failure (missing `shared/`), fixed, and confirmed the build passes with only the files the Dockerfile copies |
 | The container's folder layout works | recreated `/app/...` in a temp folder and ran the same start command: dashboard served, healthcheck command exits 0, database and backups in the data folder, `master.key` alone in the key folder |
 | Opus listens on loopback only | reachable on `127.0.0.1`, connection refused on the machine's other address |
@@ -96,6 +97,7 @@ docker compose start opus
 ```
 
 ## If something is wrong
+- **`opus` keeps restarting** (`docker compose ps` shows `Restarting`): `docker compose logs opus --tail 30` has the reason.
 - **`required variable TS_AUTHKEY is missing`**: create `.env` from `.env.example`.
 - **Opus is not on your tailnet**: `docker compose logs tailscale`. An expired or already-used key is the usual cause.
 - **Page does not load but Opus is healthy**: check HTTPS certificates and MagicDNS are on, and that your device is on the tailnet.
