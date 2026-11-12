@@ -46,6 +46,9 @@ if (dockerfile) {
   if (!/^USER\s+node\s*$/m.test(d)) fail("Dockerfile must run as USER node.");
   if (/COPY[^\n]*\.env\b/.test(d) && !/\.env\.example/.test(d)) fail("Dockerfile copies a .env file into the image.");
   if (/(tskey-|sk-ant-)[A-Za-z0-9]/.test(d)) fail("Dockerfile contains something that looks like a secret.");
+  // The dashboard build imports ../../shared/*.json, so that stage must have it (a missing folder only fails inside the image build).
+  const dashStage = d.split(/^FROM\s/m).find((st) => /^node[^\n]*\bAS\s+dashboard\b/i.test(st)) ?? "";
+  if (!/COPY\s+shared\/\s+\/app\/shared\/?/.test(dashStage)) fail("the dashboard build stage must COPY shared/ /app/shared/ (the dashboard imports it).");
   if (!/OPUS_KEY_DIR=\/keys/.test(d)) fail("Dockerfile must point OPUS_KEY_DIR at /keys (a separate volume).");
 }
 
