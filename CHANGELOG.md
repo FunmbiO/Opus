@@ -1,6 +1,9 @@
 # Changelog
 
 ## Unreleased
+### Secrets
+- `agent/scripts/reveal.ts` (`npm run reveal`) prints sealed `.env` secrets in plain text on the computer that sealed them, so they can be moved to a server. Only the secrets Opus keeps can be requested. Covered by `npm run test:reveal`.
+
 ### Deployment
 - Docker and Tailscale setup: multi-stage `Dockerfile`, `docker-compose.yml` (Opus shares a Tailscale container's network, no published ports), `tailscale serve` config (no Funnel), `.dockerignore`, `.env.example`, `deploy/backup.sh` (data and key in separate archives), and `docs/DEPLOY.md`.
 - `npm run check:deploy` (part of `npm run check`) fails if the setup could expose Opus or leak secrets.

@@ -59,6 +59,12 @@ Treat the first `docker compose up` as the real test, and read the logs.
    cp agent/style.example.md agent/style.md
    ```
    Leave `HOST` alone in `agent/.env`; compose pins it to `127.0.0.1` regardless.
+   **Sealed secrets do not travel.** If you ran `npm run protect` on your own computer, values like `GOOGLE_CLIENT_SECRET=enc1:...` can only be opened there, by that Windows login. Copying them to the server gives Opus unreadable values. On the computer that sealed them, print the plain values (this only shows them on your own screen):
+   ```bash
+   cd agent
+   npx tsx --env-file=.env scripts/reveal.ts ANTHROPIC_API_KEY GOOGLE_CLIENT_SECRET GOOGLE_REFRESH_TOKEN
+   ```
+   `GOOGLE_CLIENT_ID` is never sealed, so you can read it straight from `.env`. Type the values into the server's `agent/.env` yourself, and do not paste them into chat. Your old `.env.before-protect` file, if you kept it, also holds the plain values.
    The Google refresh token needs a browser, so run `npm run auth` on your own computer and paste the result into `agent/.env`. Opus starts without it but cannot read Gmail.
 4. **Your private files are optional for the first start.** Without them Opus runs on its generic example data. To add them later, put your real `seed/*.json` and `agent/style.md` on the server. These `scp` commands run **on your own computer**, not on the server (replace the placeholders):
    ```bash
