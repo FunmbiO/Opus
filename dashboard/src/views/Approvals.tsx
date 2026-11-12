@@ -4,6 +4,7 @@ import { ago } from "../format";
 import { Icon } from "../components/Icons";
 import { ApprovalDrawer } from "../components/ApprovalDrawer";
 import { ApprovalCard } from "../components/ApprovalCard";
+import { SafetyTiers } from "../components/SafetyTiers";
 import { ApprovalSummary } from "../components/ApprovalSummary";
 import { decidedOf, filterApprovals, pendingOf, sortApprovals, type KindFilter, type SortKey } from "../approvals";
 
@@ -98,6 +99,8 @@ export function Approvals({ s, decide, busy }: Props) {
           </div>
         </>
       )}
+      <SafetyTiers />
+
       {opened && (
         <ApprovalDrawer a={opened} s={s} busy={busy === opened.id} onClose={() => setOpenId(null)}
           onApprove={() => { decide(opened.id, "approve"); setOpenId(null); }}
