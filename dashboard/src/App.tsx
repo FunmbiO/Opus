@@ -14,6 +14,7 @@ import { Budget, type BudgetActions } from "./views/Budget";
 import type { MoneyActions } from "./views/Spending";
 import { Palette, type Command } from "./components/Palette";
 import { DraftDrawer } from "./components/Drawer";
+import { OMark } from "./components/OMark";
 import { Boot } from "./components/Boot";
 import { calcTotals, money } from "./format";
 
@@ -263,7 +264,7 @@ export default function App() {
     <div className="shell">
       {boot && <Boot onDone={() => setBoot(false)} />}
       <aside className="nav">
-        <div className="brand"><span className="mark" />Opus</div>
+        <div className="brand"><OMark bold size={30} />Opus</div>
         <nav>
           {TABS.map((t) => (
             <button key={t.id} className={tab === t.id ? "nav-item on" : "nav-item"} onClick={() => setTab(t.id)}>
@@ -289,7 +290,7 @@ export default function App() {
 
       <main>
         <div className="topbar">
-          <div className="brand"><span className="mark" />Opus</div>
+          <div className="brand"><OMark bold size={30} />Opus</div>
           <div><button className="icon-btn" onClick={() => setPalette(true)} aria-label="Search"><Icon name="search" /></button><button className="icon-btn" onClick={cycleTheme} aria-label="Change theme"><Icon name={theme === "light" ? "sun" : "moon"} /></button></div>
         </div>
         {s.mode === "live" && !s.security.passwordSet && (
