@@ -1,6 +1,12 @@
 # Changelog
 
 ## Unreleased
+### iPhone web app
+- Phone layout: four-tab bar with a More sheet, safe-area handling, 44px tap targets, 16px inputs (no iOS zoom), dynamic viewport height.
+- Refreshes when the app returns to the foreground; refresh button in the top bar; one-time "Add to Home Screen" tip on iPhone Safari.
+- iPhone launch screens, tighter manifest, home-screen shortcuts (`/?tab=ask`).
+- `dashboard/scripts/mobile-check.mjs` tests every page in an iPhone-sized browser.
+
 ### Logo and colour
 - New car-inspired "O" mark replaces the diamond: nav, boot screen, orbit centre, favicon and all app icons.
 - Ember, teal, violet and copper accents added to the black and gold look; the orbit, charts and category colours use them.

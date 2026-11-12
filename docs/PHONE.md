@@ -1,5 +1,17 @@
 # Opus on your phone
 
+## iPhone quick start (Opus running on your server)
+1. Install **Tailscale** from the App Store and sign in to the same account as your server. Turn it on.
+2. In **Safari**, open `https://opus.<your-tailnet>.ts.net` and sign in.
+3. Tap **Share**, then **Add to Home Screen**. Opus now opens full screen from its own icon.
+4. If a page looks stale, tap the refresh icon at the top. Opus also refreshes by itself when you open it.
+
+Tips: the bottom bar shows Today, Ask, Clients and Approvals; everything else is under **More**. The app only works while Tailscale is connected, because Opus is not on the public internet.
+
+---
+Older notes for running Opus on a Windows PC follow.
+
+
 Opus runs on your PC. Your phone reaches it through **Tailscale**, a free private network between your own devices. Nothing is opened to the internet.
 
 Your PC must be on, awake, and running `npm run serve`. If it sleeps, the phone gets nothing.
