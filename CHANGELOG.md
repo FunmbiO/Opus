@@ -1,6 +1,14 @@
 # Changelog
 
 ## Unreleased
+### Security
+- Rate limits per caller and route, a cap on concurrent model calls, a Host check (DNS rebinding), a strict CSP and other headers, request timeouts, safe static paths, and generic 500 errors. See `docs/SECURITY.md`.
+- Fixed: a single malformed URL could crash the server. Fixed: email header injection in reply drafts, new drafts and contract emails. Fixed: the static-file check could be fooled by a sibling folder.
+- `npm run test:security` attacks a running server; every protection was also broken on purpose to confirm the tests notice. Safe `npm audit` fixes applied.
+
+### Portfolio demo
+- Public sample-data build (`npm run build:demo`) with no network access, `?embed=1`, Vercel config, and `npm run check:demo` (in `dashboard/`). See `docs/EMBED.md`.
+
 ### iPhone web app
 - Phone layout: four-tab bar with a More sheet, safe-area handling, 44px tap targets, 16px inputs (no iOS zoom), dynamic viewport height.
 - Refreshes when the app returns to the foreground; refresh button in the top bar; one-time "Add to Home Screen" tip on iPhone Safari.

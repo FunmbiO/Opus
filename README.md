@@ -19,6 +19,9 @@ The dashboard also runs on its own with sample data (`npm run dev` in `dashboard
 ## Go live
 See `docs/SETUP.md`. In short: Anthropic API key (set a Console spend limit), Google OAuth (`npm run auth`), optional Telegram bot, then `npm run serve` with `AUTORUN=1`.
 
+## Show it on a website
+The live app stays private. For a portfolio, deploy the sample-data demo: [docs/EMBED.md](docs/EMBED.md). Security notes: [docs/SECURITY.md](docs/SECURITY.md).
+
 ## Run it on a server
 `docker compose up -d --build` runs Opus behind Tailscale, with no port open to the internet. `npm run check:deploy` enforces that. See [docs/DEPLOY.md](docs/DEPLOY.md), which also lists what has and has not been tested.
 
@@ -42,8 +45,10 @@ Opus keeps its original gold, black and paper palette, with a few pieces borrowe
 
 ## Checks
 ```
-cd agent && npm run check   # typecheck, email-safety rules, deploy rules
+cd agent && npm run check          # typecheck, email-safety rules, deploy rules
+npm run test:security              # attacks a running server
 npm run test:undo && npm run test:reveal
+cd ../dashboard && npm run check:demo   # the public demo
 ```
 
 ## License
