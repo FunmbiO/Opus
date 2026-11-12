@@ -800,3 +800,12 @@ h2, h3 { font-family: var(--mono); font-weight: 600; letter-spacing: -.01em; }
 .boot-sub { font-family: var(--mono); color: #A3A3A3; }
 .boot-sub::before { content: "$ "; color: #C6F432; }
 .orbit-cap { font-family: var(--mono); }
+
+/* polish: quieter notice, readable nav in light theme, no wrapping in the sidebar */
+.banner { background: #151515; color: var(--lime); border: 2px dashed var(--lime); font-size: .78rem; padding: 8px 12px; margin-bottom: 20px; }
+:root[data-theme="light"] .banner { background: #0A0A0A; }
+.banner.warn { background: var(--bad); color: #0A0A0A; border: 2px solid var(--line); }
+.nav-item.on { background: #151515; }
+.kbtn { white-space: nowrap; font-size: .76rem; } .kbtn kbd { font-size: .62rem; padding: 0 4px; }
+.mode { white-space: nowrap; }
+@media (max-width: 880px) { .banner { font-size: .7rem; padding: 6px 10px; } .orbit-cap { font-size: .68rem; } }
