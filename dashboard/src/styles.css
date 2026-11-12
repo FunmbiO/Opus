@@ -601,3 +601,10 @@ body { background-image: radial-gradient(color-mix(in srgb, var(--ink) 9%, trans
 .panel::before { display: none; }
 .btn, .chip, .search, .inp, .idea, .sample, .badge, .pill, kbd, .toast, .banner { border-radius: 4px; }
 .panel, .alert, .lockcard, .palette, .rowbtn, .drawer { border-radius: 6px; }
+
+/* terminal headlines: $ eyebrow, gold marker, blinking cursor */
+.hero .eyebrow, .stage .eyebrow { font: 400 .875rem var(--mono); letter-spacing: 0; color: var(--ink-2); }
+.hero .eyebrow::before, .stage .eyebrow::before { content: "$ "; color: var(--gold-ink); }
+.hero h1 .soft, .stage h1 .soft, .stage h1 em { background: var(--mark); color: var(--on-mark); padding: 0 .14em; font-style: normal; font-weight: inherit; -webkit-text-fill-color: var(--on-mark); }
+.hero h1::after, .stage h1::after { content: ""; display: inline-block; width: .45em; height: .8em; margin-left: 8px; background: var(--mark); vertical-align: -.04em; animation: cursor 1.05s steps(1) infinite; }
+@keyframes cursor { 50% { opacity: 0; } }
