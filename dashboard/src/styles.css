@@ -664,3 +664,6 @@ body { background-image: radial-gradient(color-mix(in srgb, var(--ink) 9%, trans
 .banner.warn .btn { background: #fff; color: #111; }
 .sample { background: var(--mark); color: var(--on-mark); }
 @media (max-width: 880px) { .banner { font-size: .7rem; padding: 6px 10px; } }
+
+/* the logotype keeps the original display face (Space Mono's O reads as a zero) */
+.brand { font-family: var(--display); letter-spacing: -.04em; font-weight: 900; }
