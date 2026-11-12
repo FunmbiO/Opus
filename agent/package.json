@@ -21,6 +21,7 @@
     "check:deploy": "node scripts/deploy-check.mjs",
     "reveal": "tsx --env-file-if-exists=.env scripts/reveal.ts",
     "test:undo": "tsx scripts/undo-test.ts",
+    "test:security": "tsx scripts/security-test.ts",
     "test:reveal": "tsx scripts/reveal-test.ts",
     "check": "npm run typecheck && npm run safety && npm run check:deploy",
     "readtest": "tsx scripts/readtest.ts",
