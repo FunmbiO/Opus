@@ -709,3 +709,19 @@ h2, h3 { font-family: var(--mono); font-weight: 600; letter-spacing: -.01em; }
 .banner.warn .btn { background: #0A0A0A; color: #F5F5F5; border-color: #0A0A0A; }
 .sample { background: var(--lime); color: #0A0A0A; }
 .preview, .drawer-body, .txedit, .safe { background: var(--paper); border-left: 3px solid var(--accent); }
+
+/* nav, brand, tab bar */
+.nav { border-right: 2px solid var(--hair); }
+.brand { font: 600 1.375rem var(--mono); letter-spacing: -.02em; gap: 12px; }
+.mark { width: 28px; height: 28px; border-radius: 3px; background: var(--accent); transform: none; position: relative; flex: none; }
+.mark::after { content: ""; position: absolute; inset: 7px; background: #0A0A0A; transform: rotate(45deg) scale(.72); }
+.nav-item { font-family: var(--mono); font-weight: 600; font-size: .9rem; border-left: 3px solid transparent; }
+.nav-item.on { color: var(--lime); border-left-color: var(--lime); background: var(--paper-2); }
+.badge { background: var(--accent); color: #0A0A0A; border-radius: 3px; }
+.mode { font-family: var(--mono); font-size: .74rem; }
+.mode.live { background: var(--lime); color: #0A0A0A; }
+.ss-bar i { background: var(--accent); } .ss-row b { font-family: var(--mono); }
+.kbtn { font-family: var(--mono); font-size: .8rem; } .kbtn:hover { color: var(--lime); }
+.tabbar { background: #0A0A0A; border-top: 2px solid var(--hair); }
+.tabbar button.on { color: var(--lime); box-shadow: inset 0 3px 0 var(--lime); }
+.tabbar .badge { background: var(--accent); }
