@@ -26,3 +26,19 @@ burgundy 2%, green 1%. Black does the heavy lifting, gold marks what needs you.
 - No rounded corners.
 - Cards: 2px ink border plus a hard `3px 3px 0` ink offset shadow.
 - Status chips: solid fill, ground-coloured text, square.
+
+## Screens
+Captured from the dashboard running on its built-in sample data.
+
+| Today (dark) | Subscriptions (dark) |
+|---|---|
+| ![Today](screens/today.png) | ![Subscriptions](screens/subscriptions.png) |
+
+| Today (mobile) | Subscriptions (light) |
+|---|---|
+| ![Mobile](screens/today-mobile.png) | ![Light](screens/subscriptions-light.png) |
+
+## Where it lives in code
+- Tokens: the `:root` blocks at the top of `dashboard/src/styles.css` (light, plus dark via `prefers-color-scheme` and `data-theme="dark"`).
+- Fonts: the Google Fonts link in `dashboard/index.html`.
+- Type roles and signal colours: the "Obsidian Pop" sections at the bottom of `styles.css`.
