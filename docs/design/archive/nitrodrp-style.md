@@ -1,6 +1,6 @@
 # NitroDrp style
 
-> Superseded by [opus-style.md](opus-style.md).
+> Superseded by [opus-style.md](../opus-style.md).
 
 Opus follows the NitroDrp private file transfer design: a terminal-flavoured, hard-edged
 look. Dark ("Night Signal") is the default; light is "Concrete Signal".
