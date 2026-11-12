@@ -1,26 +1,28 @@
 :root {
-  --paper: #fdfdfb; --paper-2: #f3f1ec; --ink: #0a0a0a; --ink-2: #4a4a46; --ink-3: #8c8c85; --line: #0a0a0a; --hair: #dcdbd4;
-  --gold: #b4904e; --gold-ink: #7a5a22; --gold-soft: #f2eadb; --green: #0e5a43; --green-soft: #dcebe4; --bad: #c8321e; --bad-soft: #fbe0da;
-  --gold-grad: linear-gradient(180deg, #a07a34, #6d4f1a);
-  --nav-bg: #0a0a09; --nav-ink: #f5f5f0; --nav-dim: #9a9a92;
-  --c-jaded: #b4904e; --c-school: #0e5a43; --c-bills: #0a0a0a; --c-personal: #8f8c82; --c-junk: #dcdad1;
+  /* Obsidian Pop, light variant: board cream with the same signal colours */
+  --paper: #EDEBE5; --paper-2: #E2DFD6; --ink: #1B1A17; --ink-2: #55524A; --ink-3: #7C786C; --line: #1B1A17; --hair: #CBC7BB;
+  --gold: #CFA349; --gold-ink: #7A5A1A; --gold-soft: #F1E6CC; --green: #1F7F52; --green-soft: #D5E8DD; --bad: #A3153F; --bad-soft: #F2D3DB;
+  --pink: #FF6FA5; --orange: #FF6B1A; --burgundy: #A3153F;
+  --gold-grad: none;
+  --nav-bg: #0A0A09; --nav-ink: #F4F1E8; --nav-dim: #9A9689;
+  --c-jaded: #FF6FA5; --c-school: #2BAA6E; --c-bills: #1B1A17; --c-personal: #8F8B7E; --c-junk: #CBC7BB;
   --display: "Newsreader", Georgia, "Times New Roman", serif;
   --body: "Inter", ui-sans-serif, system-ui, sans-serif;
   --mono: "Space Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #000000; --paper-2: #141412; --ink: #f5f5f0; --ink-2: #b4b4ac; --ink-3: #767670; --line: #f5f5f0; --hair: #2a2a26;
-    --gold: #d2b072; --gold-ink: #d2b072; --gold-soft: #2a2418; --green: #3dbf8f; --green-soft: #0a2a20; --gold-grad: linear-gradient(180deg, #f6e8bf, #d2b072 52%, #9b7a3c); --bad: #ff6b55; --bad-soft: #3a130d;
-    --nav-bg: #000000; --nav-ink: #f5f5f0; --nav-dim: #767670;
-    --c-school: #3dbf8f; --c-bills: #f5f5f0; --c-personal: #767670; --c-junk: #2f2f2b;
+    --paper: #0A0A09; --paper-2: #151513; --ink: #F4F1E8; --ink-2: #B9B4A5; --ink-3: #85816F; --line: #F4F1E8; --hair: #2A2925;
+    --gold: #CFA349; --gold-ink: #CFA349; --gold-soft: #26200F; --green: #2BAA6E; --green-soft: #0B2A1D; --bad: #E8557A; --bad-soft: #2E0A15;
+    --nav-bg: #0A0A09; --nav-ink: #F4F1E8; --nav-dim: #85816F;
+    --c-school: #2BAA6E; --c-bills: #F4F1E8; --c-personal: #85816F; --c-junk: #2F2E2A;
   }
 }
 :root[data-theme="dark"] {
-    --paper: #000000; --paper-2: #141412; --ink: #f5f5f0; --ink-2: #b4b4ac; --ink-3: #767670; --line: #f5f5f0; --hair: #2a2a26;
-    --gold: #d2b072; --gold-ink: #d2b072; --gold-soft: #2a2418; --green: #3dbf8f; --green-soft: #0a2a20; --gold-grad: linear-gradient(180deg, #f6e8bf, #d2b072 52%, #9b7a3c); --bad: #ff6b55; --bad-soft: #3a130d;
-    --nav-bg: #000000; --nav-ink: #f5f5f0; --nav-dim: #767670;
-    --c-school: #3dbf8f; --c-bills: #f5f5f0; --c-personal: #767670; --c-junk: #2f2f2b;
+    --paper: #0A0A09; --paper-2: #151513; --ink: #F4F1E8; --ink-2: #B9B4A5; --ink-3: #85816F; --line: #F4F1E8; --hair: #2A2925;
+    --gold: #CFA349; --gold-ink: #CFA349; --gold-soft: #26200F; --green: #2BAA6E; --green-soft: #0B2A1D; --bad: #E8557A; --bad-soft: #2E0A15;
+    --nav-bg: #0A0A09; --nav-ink: #F4F1E8; --nav-dim: #85816F;
+    --c-school: #2BAA6E; --c-bills: #F4F1E8; --c-personal: #85816F; --c-junk: #2F2E2A;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; }
