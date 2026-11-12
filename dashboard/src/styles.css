@@ -676,3 +676,15 @@ body { background-image: radial-gradient(color-mix(in srgb, var(--ink) 9%, trans
 .aq-stat.hot { border-color: var(--gold-ink); } .aq-stat.hot b { color: var(--gold-ink); }
 .aq-stat.save b { color: var(--green); }
 @media (max-width: 880px) { .aq-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.aq-list { display: flex; flex-direction: column; gap: 18px; }
+.aq-card { border: 2px solid var(--ink); background: var(--paper-2); box-shadow: 5px 5px 0 var(--lift); border-radius: 6px; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+.aq-card.sel { border-color: var(--gold); box-shadow: 5px 5px 0 var(--gold); }
+.aq-head { display: flex; justify-content: space-between; align-items: center; }
+.aq-kind { color: #0a0a0a; background: var(--gold); border-color: #0a0a0a; }
+.aq-title { margin: 0; font-size: 1.35rem; line-height: 1.15; }
+.aq-reason { margin: 0; color: var(--ink-2); max-width: 70ch; }
+.aq-facts { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: 28px; margin: 4px 0; padding: 12px 0; border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair); }
+.aq-facts div { display: flex; flex-direction: column; gap: 2px; }
+.aq-facts dt { font: 400 .72rem var(--mono); color: var(--ink-3); text-transform: uppercase; letter-spacing: .05em; }
+.aq-facts dd { margin: 0; font-weight: 700; } .aq-facts small { color: var(--ink-3); font-weight: 500; }
+@media (max-width: 880px) { .aq-facts { grid-template-columns: 1fr 1fr; gap: 14px 20px; } }

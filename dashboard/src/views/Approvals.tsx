@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { State } from "../types";
 import { ago } from "../format";
 import { Icon } from "../components/Icons";
+import { ApprovalCard } from "../components/ApprovalCard";
 import { ApprovalSummary } from "../components/ApprovalSummary";
 import { decidedOf, filterApprovals, pendingOf, sortApprovals, type KindFilter, type SortKey } from "../approvals";
 
@@ -42,22 +43,10 @@ export function Approvals({ s, decide, busy }: Props) {
 
       {all.length === 0 && <p className="empty big">Nothing to decide right now.</p>}
       {all.length > 0 && pending.length === 0 && <p className="empty">Nothing of that kind is waiting.</p>}
-      <div className="rows">
+      <div className="aq-list">
         {pending.map((a) => (
-          <article className="approval" key={a.id}>
-            <div className="approval-icon"><Icon name="approve" /></div>
-            <div className="approval-body">
-              <strong>{a.title}</strong>
-              <p>{a.reason}</p>
-              <div className="sub-actions">
-                <button className="btn primary small" disabled={busy === a.id} onClick={() => decide(a.id, "approve")}>
-                  {busy === a.id ? "Working…" : "Approve: prepare it"}
-                </button>
-                <button className="btn small" disabled={busy === a.id} onClick={() => decide(a.id, "dismiss")}>Not now</button>
-              </div>
-            </div>
-            <span className="when">{ago(a.createdAt, s.now)}</span>
-          </article>
+          <ApprovalCard key={a.id} a={a} s={s} busy={busy === a.id} selected={false}
+            onApprove={() => decide(a.id, "approve")} onDismiss={() => decide(a.id, "dismiss")} onOpen={() => undefined} />
         ))}
       </div>
 
