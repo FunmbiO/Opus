@@ -49,6 +49,9 @@ if (dockerfile) {
   // The dashboard build imports ../../shared/*.json, so that stage must have it (a missing folder only fails inside the image build).
   const dashStage = d.split(/^FROM\s/m).find((st) => /^node[^\n]*\bAS\s+dashboard\b/i.test(st)) ?? "";
   if (!/COPY\s+shared\/\s+\/app\/shared\/?/.test(dashStage)) fail("the dashboard build stage must COPY shared/ /app/shared/ (the dashboard imports it).");
+  // NODE_ENV=production makes `npm ci` skip devDependencies, and tsx (what runs the agent) is one.
+  const runStage = d.split(/^FROM\s/m).find((st) => /\bAS\s+run\b/i.test(st)) ?? "";
+  if (/NODE_ENV=production/.test(runStage) && /^RUN\s+npm\s+ci(?!.*--include=dev)/m.test(runStage)) fail("the run stage sets NODE_ENV=production, so `npm ci` needs --include=dev or tsx will be missing.");
   if (!/OPUS_KEY_DIR=\/keys/.test(d)) fail("Dockerfile must point OPUS_KEY_DIR at /keys (a separate volume).");
 }
 
