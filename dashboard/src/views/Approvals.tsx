@@ -71,7 +71,12 @@ export function Approvals({ s, decide, busy }: Props) {
         </div>
       )}
 
-      {all.length === 0 && <p className="empty big">Nothing to decide right now.</p>}
+      {all.length === 0 && (
+        <div className="aq-empty">
+          <p className="aq-prompt">$ opus queue --pending</p>
+          <p><b>0 items.</b> Nothing to decide right now. When Opus spots something worth your attention, it lands here.</p>
+        </div>
+      )}
       {all.length > 0 && pending.length === 0 && <p className="empty">Nothing of that kind is waiting.</p>}
       {pending.length > 0 && (
         <p className="aq-keys" aria-label="Keyboard shortcuts"><kbd>j</kbd><kbd>k</kbd> move <kbd>a</kbd> approve <kbd>d</kbd> not now <kbd>Enter</kbd> details <kbd>Esc</kbd> close</p>
@@ -85,20 +90,22 @@ export function Approvals({ s, decide, busy }: Props) {
 
       {done.length > 0 && (
         <>
-          <h3 className="sect">Decided this week</h3>
+          <h3 className="sect">Decided</h3>
           <div className="rows">
             {done.map((a) => (
-              <article className="approval done" key={a.id}>
-                <div className="approval-body">
+              <button className="aq-done" key={a.id} onClick={() => setOpenId(a.id)}>
+                <span className={`pill ${a.status === "approved" ? "v-keep" : "v-unclear"}`}>{a.status === "approved" ? "Prepared" : "Not now"}</span>
+                <span className="aq-done-main">
                   <strong>{a.title}</strong>
-                  <p>{a.status === "dismissed" ? "You said not now." : a.result ?? "Prepared."}</p>
-                </div>
+                  <small>{a.status === "dismissed" ? "You said not now." : a.result ?? "Prepared."}</small>
+                </span>
                 <span className="when">{ago(a.createdAt, s.now)}</span>
-              </article>
+              </button>
             ))}
           </div>
         </>
       )}
+
       <SafetyTiers />
 
       {opened && (
