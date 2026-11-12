@@ -12,3 +12,4 @@ dist-preview/
 seed/*.json
 !seed/*.example.json
 agent/style.md
+dist-demo/

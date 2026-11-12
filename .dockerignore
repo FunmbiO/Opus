@@ -13,3 +13,4 @@ seed/*.json
 *.db
 *.db-*
 docs/design/screens
+**/dist-demo

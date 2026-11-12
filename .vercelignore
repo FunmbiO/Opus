@@ -1,0 +1,11 @@
+# The public demo needs only the dashboard and the sample data. Keep everything private out of any upload.
+agent/
+seed/
+data/
+deploy/
+docs/
+.env
+.env.*
+*.db
+*.db-*
+*.zip
