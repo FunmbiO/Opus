@@ -285,8 +285,6 @@ kbd { font: 600 .7rem var(--body); border: 1px solid currentColor; padding: 1px 
 }
 
 /* ---- Wow pass ---- */
-:root[data-theme="dark"] body { background: radial-gradient(1100px 520px at 72% -8%, rgba(210,176,114,.12), transparent 70%), radial-gradient(700px 400px at 0% 100%, rgba(61,191,143,.06), transparent 70%), var(--paper); background-attachment: fixed; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) body { background: radial-gradient(1100px 520px at 72% -8%, rgba(210,176,114,.12), transparent 70%), var(--paper); background-attachment: fixed; } }
 .meter-value, .tl-total, .big { color: var(--gold); }
 .rowbtn:hover .big { color: var(--gold); }
 
@@ -300,7 +298,7 @@ kbd { font: 600 .7rem var(--body); border: 1px solid currentColor; padding: 1px 
 /* Light that follows the pointer along panel borders */
 .panel { position: relative; }
 .panel::before { content: ""; position: absolute; inset: -1.5px; padding: 1.5px; pointer-events: none; opacity: 0; transition: opacity .25s;
-  background: radial-gradient(280px circle at var(--mx, 50%) var(--my, 50%), #e6cf98, rgba(180,144,78,.5) 40%, transparent 70%);
+  background: radial-gradient(280px circle at var(--mx, 50%) var(--my, 50%), #CFA349, rgba(207,163,73,.45) 40%, transparent 70%);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
 .panel:hover::before { opacity: 1; }
 
@@ -639,3 +637,7 @@ body { overscroll-behavior-y: none; }
 .mode i { width: 8px; height: 8px; }
 .mode.live { color: #0A0A09; background: var(--green); font-weight: 700; padding: 4px 8px; margin: 0 22px; width: fit-content; }
 .mode.live i { background: #0A0A09; }
+
+/* panels sit flat; only interactive things lift */
+.panel { box-shadow: none; }
+.panel:hover { box-shadow: 3px 3px 0 var(--line); }
