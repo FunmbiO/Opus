@@ -34,8 +34,17 @@ Opus keeps its original gold, black and paper palette, with a few pieces borrowe
 ![Opus dashboard](docs/design/screens/op-today.png)
 
 ## Layout
-- `agent/` the agent, API server, SQLite. `src/tools.ts` is the complete list of what the model may do.
-- `dashboard/` React + Vite UI. `shared/audit.json` is sample data; your own setup goes in `seed/` (see `docs/SETUP.md`).
+- `agent/` the agent, API server and SQLite. `src/tools.ts` is the complete list of what the model may do.
+- `dashboard/` React + Vite UI. Installs on an iPhone as a web app. `shared/audit.json` is sample data.
+- `seed/` your own setup (git-ignored). The `*.example.json` files are the generic templates.
+- `deploy/` Tailscale and backup files for the Docker setup.
+- `docs/` everything else. Start at [docs/README.md](docs/README.md).
+
+## Checks
+```
+cd agent && npm run check   # typecheck, email-safety rules, deploy rules
+npm run test:undo && npm run test:reveal
+```
 
 ## License
 MIT. See [LICENSE](LICENSE).
