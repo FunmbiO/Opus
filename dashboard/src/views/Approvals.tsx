@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { State } from "../types";
 import { ago } from "../format";
 import { Icon } from "../components/Icons";
@@ -16,7 +16,33 @@ export function Approvals({ s, decide, busy }: Props) {
   const all = pendingOf(s.approvals);
   const pending = sortApprovals(filterApprovals(all, filter), sort, s);
   const done = decidedOf(s.approvals);
+  const [selId, setSelId] = useState<string | null>(null);
+  const sel = pending.find((x) => x.id === selId) ?? pending[0] ?? null;
   const opened = openId ? s.approvals.find((x) => x.id === openId) ?? null : null;
+  useEffect(() => {
+    const f = (e: KeyboardEvent) => {
+      const t = e.target as HTMLElement | null;
+      if (e.metaKey || e.ctrlKey || e.altKey || opened) return;
+      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+      const i = sel ? pending.findIndex((x) => x.id === sel.id) : -1;
+      const move = (n: number) => {
+        const next = pending[Math.max(0, Math.min(pending.length - 1, n))];
+        if (!next) return;
+        setSelId(next.id);
+        document.querySelector(`[data-id="${next.id}"]`)?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      };
+      if (e.key === "j") move(i + 1);
+      else if (e.key === "k") move(i - 1);
+      else if (e.key === "Enter" && sel) setOpenId(sel.id);
+      else if (e.key === "a" && sel && busy !== sel.id) decide(sel.id, "approve");
+      else if (e.key === "d" && sel && busy !== sel.id) decide(sel.id, "dismiss");
+      else return;
+      e.preventDefault();
+    };
+    window.addEventListener("keydown", f);
+    return () => window.removeEventListener("keydown", f);
+  });
+
   return (
     <div className="view">
       <header className="hero slim">
@@ -46,9 +72,12 @@ export function Approvals({ s, decide, busy }: Props) {
 
       {all.length === 0 && <p className="empty big">Nothing to decide right now.</p>}
       {all.length > 0 && pending.length === 0 && <p className="empty">Nothing of that kind is waiting.</p>}
+      {pending.length > 0 && (
+        <p className="aq-keys" aria-label="Keyboard shortcuts"><kbd>j</kbd><kbd>k</kbd> move <kbd>a</kbd> approve <kbd>d</kbd> not now <kbd>Enter</kbd> details <kbd>Esc</kbd> close</p>
+      )}
       <div className="aq-list">
         {pending.map((a) => (
-          <ApprovalCard key={a.id} a={a} s={s} busy={busy === a.id} selected={false}
+          <ApprovalCard key={a.id} a={a} s={s} busy={busy === a.id} selected={sel?.id === a.id}
             onApprove={() => decide(a.id, "approve")} onDismiss={() => decide(a.id, "dismiss")} onOpen={() => setOpenId(a.id)} />
         ))}
       </div>

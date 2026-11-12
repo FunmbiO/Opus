@@ -695,3 +695,6 @@ body { background-image: radial-gradient(color-mix(in srgb, var(--ink) 9%, trans
 .aq-detail div:last-child { border-bottom: 0; }
 .aq-detail dt { font: 400 .72rem var(--mono); color: var(--ink-3); text-transform: uppercase; letter-spacing: .04em; padding-top: 2px; }
 .aq-detail dd { margin: 0; font-weight: 600; } .aq-detail small { color: var(--ink-3); font-weight: 500; }
+.aq-keys { margin: -8px 0 0; font: 400 .76rem var(--mono); color: var(--ink-3); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.aq-keys kbd { margin-left: 0; opacity: 1; }
+@media (hover: none) { .aq-keys { display: none; } }
