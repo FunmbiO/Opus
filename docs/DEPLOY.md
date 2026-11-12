@@ -24,3 +24,78 @@ your phone / laptop ──(Tailscale, WireGuard)──► tailscale container �
 This guide works on any Linux box with Docker. Which provider you use is **not verified here**: nothing in the repo
 says, and the AWS connection used during development was not signed in. If you use AWS Lightsail, see the note at the end
 once it has been checked.
+
+## What was checked, and what was not
+| Checked here | How |
+|---|---|
+| `docker-compose.yml` is valid and renders as intended | `docker compose config` (no ports, shared network, `cap_drop: ALL`, three volumes, missing Tailscale key fails loudly) |
+| `agent/.env` cannot override `HOST`, `PORT` or the key folder | rendered with a hostile `HOST=0.0.0.0` in `agent/.env`: still `127.0.0.1` |
+| The safety rules hold | `npm run check:deploy`, tested by breaking each rule on purpose (14 cases, all caught) |
+| The container's folder layout works | recreated `/app/...` in a temp folder and ran the same start command: dashboard served, healthcheck command exits 0, database and backups in the data folder, `master.key` alone in the key folder |
+| Opus listens on loopback only | reachable on `127.0.0.1`, connection refused on the machine's other address |
+
+| **Not** checked here | Why |
+|---|---|
+| Building the Docker image | there is no Docker daemon in the development environment |
+| The Tailscale container joining your tailnet, and HTTPS via `tailscale serve` | needs a real Tailscale account and key |
+| `deploy/backup.sh` and the restore steps below | need Docker running (the script is syntax-checked only) |
+| A real server, including Lightsail | not verified, see the end |
+
+Treat the first `docker compose up` as the real test, and read the logs.
+
+## First-time setup
+1. **Server**: a Linux box with Docker and the Compose plugin. As a rule of thumb give it 2 GB of RAM, because building the image runs `npm ci` and the dashboard build.
+2. **Tailscale admin** (https://login.tailscale.com/admin): turn on **MagicDNS** and **HTTPS certificates** (DNS page), then create an **auth key** (Settings, Keys). Make it one-off, not reusable.
+3. **Get the code** on the server and create the two env files (both are git-ignored):
+   ```bash
+   git clone https://github.com/FunmbiO/Opus.git && cd Opus
+   cp .env.example .env              # put TS_AUTHKEY in here
+   cp agent/.env.example agent/.env  # Anthropic key, Google tokens, API_TOKEN, AUTORUN=1
+   ```
+   Leave `HOST` alone in `agent/.env`; compose pins it to `127.0.0.1` regardless.
+   The Google refresh token needs a browser, so run `npm run auth` on your own computer and paste the result into `agent/.env`.
+4. **Your private files** are not in git. Copy them over once (use the server's Tailscale name or its current address):
+   ```bash
+   scp seed/*.json you@server:Opus/seed/
+   scp agent/style.md you@server:Opus/agent/
+   ```
+5. **Start it**:
+   ```bash
+   docker compose up -d --build
+   docker compose ps          # both services should be running, opus "healthy"
+   docker compose logs -f     # first-run problems show up here
+   ```
+6. **Open** `https://opus.<your-tailnet>.ts.net` from a device that is signed in to the same tailnet, and set your dashboard password.
+
+## Everyday
+```bash
+git pull && docker compose up -d --build   # update
+docker compose logs --tail 100 opus        # what happened
+docker compose restart opus
+```
+
+## Backups
+Opus already keeps 14 daily copies of its database inside the data volume. For a copy that survives losing the server:
+```bash
+deploy/backup.sh ~/opus-backups
+```
+It writes **two files**: `opus-data-*.tgz` and `opus-key-*.tgz`. Store them in different places. The key file alone is useless, and the data file alone cannot be read; together they are everything. **If the key is lost, encrypted data cannot be recovered.**
+
+To restore onto a fresh server, bring the stack up once so the volumes exist, stop Opus, then unpack:
+```bash
+docker compose stop opus
+docker run --rm -v opus_data:/v -v "$PWD":/in alpine sh -c 'cd /v && tar xzf /in/opus-data-XXXX.tgz'
+docker run --rm -v opus_keys:/v -v "$PWD":/in alpine sh -c 'cd /v && tar xzf /in/opus-key-XXXX.tgz'
+docker compose start opus
+```
+
+## If something is wrong
+- **`required variable TS_AUTHKEY is missing`**: create `.env` from `.env.example`.
+- **Opus is not on your tailnet**: `docker compose logs tailscale`. An expired or already-used key is the usual cause.
+- **Page does not load but Opus is healthy**: check HTTPS certificates and MagicDNS are on, and that your device is on the tailnet.
+- **`npm run check:deploy` fails**: it names the rule. Do not work around it; the rules are what keep Opus off the internet.
+
+## Hosting provider note
+Not verified. If this runs on AWS Lightsail, check these once you have confirmed it:
+- Tailscale needs **no inbound ports**. You can leave the Lightsail firewall as small as possible.
+- Keep a way back in (Lightsail's browser SSH console) before closing anything. The Tailscale container does not give you SSH to the host.
