@@ -18,6 +18,15 @@ export function Approvals({ s, decide, undo, busy }: Props) {
   const pending = sortApprovals(filterApprovals(all, filter), sort, s);
   const done = decidedOf(s.approvals);
   const [selId, setSelId] = useState<string | null>(null);
+  // The last "not now", offered for a few seconds as a one-key undo.
+  const [last, setLast] = useState<{ id: string; title: string } | null>(null);
+  useEffect(() => {
+    if (!last) return;
+    const t = setTimeout(() => setLast(null), 10000);
+    return () => clearTimeout(t);
+  }, [last]);
+  const dismiss = (a: { id: string; title: string }) => { decide(a.id, "dismiss"); setLast({ id: a.id, title: a.title }); };
+  const undoLast = () => { if (!last) return; undo(last.id); setLast(null); };
   const sel = pending.find((x) => x.id === selId) ?? pending[0] ?? null;
   const opened = openId ? s.approvals.find((x) => x.id === openId) ?? null : null;
   useEffect(() => {
@@ -36,7 +45,8 @@ export function Approvals({ s, decide, undo, busy }: Props) {
       else if (e.key === "k") move(i - 1);
       else if (e.key === "Enter" && sel) setOpenId(sel.id);
       else if (e.key === "a" && sel && busy !== sel.id) decide(sel.id, "approve");
-      else if (e.key === "d" && sel && busy !== sel.id) decide(sel.id, "dismiss");
+      else if (e.key === "d" && sel && busy !== sel.id) dismiss(sel);
+      else if (e.key === "u" && last) undoLast();
       else return;
       e.preventDefault();
     };
@@ -78,13 +88,19 @@ export function Approvals({ s, decide, undo, busy }: Props) {
         </div>
       )}
       {all.length > 0 && pending.length === 0 && <p className="empty">Nothing of that kind is waiting.</p>}
+      {last && (
+        <div className="aq-undobar" role="status">
+          <span>Not now: <b>{last.title}</b></span>
+          <button className="btn small primary" onClick={undoLast}>Undo <kbd>u</kbd></button>
+        </div>
+      )}
       {pending.length > 0 && (
-        <p className="aq-keys" aria-label="Keyboard shortcuts"><kbd>j</kbd><kbd>k</kbd> move <kbd>a</kbd> approve <kbd>d</kbd> not now <kbd>Enter</kbd> details <kbd>Esc</kbd> close</p>
+        <p className="aq-keys" aria-label="Keyboard shortcuts"><kbd>j</kbd><kbd>k</kbd> move <kbd>a</kbd> approve <kbd>d</kbd> not now <kbd>u</kbd> undo <kbd>Enter</kbd> details <kbd>Esc</kbd> close</p>
       )}
       <div className="aq-list">
         {pending.map((a) => (
           <ApprovalCard key={a.id} a={a} s={s} busy={busy === a.id} selected={sel?.id === a.id}
-            onApprove={() => decide(a.id, "approve")} onDismiss={() => decide(a.id, "dismiss")} onOpen={() => setOpenId(a.id)} />
+            onApprove={() => decide(a.id, "approve")} onDismiss={() => dismiss(a)} onOpen={() => setOpenId(a.id)} />
         ))}
       </div>
 
@@ -116,7 +132,7 @@ export function Approvals({ s, decide, undo, busy }: Props) {
       {opened && (
         <ApprovalDrawer a={opened} s={s} busy={busy === opened.id} onClose={() => setOpenId(null)}
           onApprove={() => { decide(opened.id, "approve"); setOpenId(null); }}
-          onDismiss={() => { decide(opened.id, "dismiss"); setOpenId(null); }}
+          onDismiss={() => { dismiss(opened); setOpenId(null); }}
           onUndo={() => { undo(opened.id); setOpenId(null); }} />
       )}
     </div>

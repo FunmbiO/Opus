@@ -722,3 +722,5 @@ body { background-image: radial-gradient(color-mix(in srgb, var(--ink) 9%, trans
   .aq-summary { gap: 8px; } .aq-stat { padding: 8px 12px; box-shadow: 3px 3px 0 var(--lift); } .aq-stat b { font-size: 1.4rem; } .aq-stat span { font-size: .68rem; }
   .aq-card { padding: 16px; } .aq-title { font-size: 1.15rem; }
 }
+.aq-undobar { display: flex; justify-content: space-between; align-items: center; gap: 12px; border: 2px dashed var(--gold-ink); border-radius: 6px; padding: 8px 12px; font-size: .86rem; background: var(--paper-2); }
+.aq-undobar b { font-weight: 700; } .aq-undobar kbd { margin-left: 6px; }
