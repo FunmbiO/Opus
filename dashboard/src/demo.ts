@@ -87,7 +87,7 @@ export function demoState(): State {
     security: { passwordSet: false, sessions: 0, lastLoginAt: null, encryption: "key-file" },
     jaded: defaults as unknown as JadedSettings,
     subscriptions: audit.subscriptions as Sub[],
-    approvals: audit.approvals as Approval[],
+    approvals: (audit.approvals as Partial<Approval>[]).map((a) => ({ status: "pending", ...a })) as Approval[],
     alerts: audit.alerts as Alert[],
     activity: [
       { id: 7, ts: h(0.2), kind: "triage", job: "triage", summary: "Sorted 14 new emails. 2 need a reply." },
