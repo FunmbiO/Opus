@@ -772,3 +772,23 @@ h2, h3 { font-family: var(--mono); font-weight: 600; letter-spacing: -.01em; }
 .tl-dot { border-radius: 2px; } .tl-axis { background: var(--hair); }
 .made { background: var(--green-soft); border-left: 4px solid var(--lime); border-radius: 4px; } .made svg { color: var(--lime); }
 .steps svg { color: var(--lime); }
+
+/* forms, composer, overlays */
+.inp, .auth input, .composer textarea, .search { background: var(--paper-2); border: 2px solid var(--line); border-radius: 4px; color: var(--ink); }
+.inp:focus, .money:focus-within { border-color: var(--lime); box-shadow: 3px 3px 0 var(--pop); }
+.search:focus-within { box-shadow: 3px 3px 0 var(--pop); border-color: var(--lime); }
+.check input { accent-color: var(--accent); }
+.composer { background: var(--paper); border-top: 1px solid var(--hair); }
+.bubble { border: 2px solid var(--line); border-radius: 6px; background: var(--paper-2); }
+.msg.user .bubble { background: var(--accent); color: #0A0A0A; font-weight: 500; }
+.msg.assistant .bubble { border-left: 6px solid var(--lime); }
+.idea { background: var(--paper-2); border: 2px dashed var(--line); border-radius: 12px; font-family: var(--mono); font-weight: 600; }
+.idea:hover { background: var(--paper-2); color: var(--lime); border-style: solid; box-shadow: 4px 4px 0 var(--pop); transform: translate(-2px, -2px); }
+.working span { background: var(--lime); }
+.palette { box-shadow: 8px 8px 0 var(--pop); }
+.pal-item.on { background: var(--paper); border-left-color: var(--lime); }
+.pal-group { font-family: var(--mono); }
+.toast { background: var(--paper-2); color: var(--ink); border: 2px solid var(--line); border-left: 6px solid var(--lime); box-shadow: 4px 4px 0 var(--pop); font-family: var(--mono); }
+.spinner { border-top-color: var(--lime); }
+.scrim { background: rgba(0,0,0,.65); }
+.chip-cat i { border-radius: 2px; }
