@@ -33,7 +33,7 @@ export function ApprovalDrawer({ a, s, busy, onClose, onApprove, onDismiss }: Pr
             <div><dt>Service</dt><dd>{sub.name}</dd></div>
             <div><dt>Plan</dt><dd>{sub.plan || "—"}</dd></div>
             <div><dt>Billing</dt><dd>{sub.billing || sub.cycle || "—"}</dd></div>
-            <div><dt>Costs</dt><dd>{money(sub.amount)} {sub.cycle && <small>{sub.cycle}</small>} · {money(sub.monthlyEquivalent)}/mo</dd></div>
+            <div><dt>Costs</dt><dd>{money(sub.amount)} {sub.cycle && <small>{sub.cycle}</small>}{sub.cycle !== "monthly" && sub.monthlyEquivalent != null ? <> · {money(sub.monthlyEquivalent)}/mo</> : null}</dd></div>
             <div><dt>Next charge</dt><dd>{dueLabel(sub.nextCharge, s.now)}{sub.nextCharge ? ` (${sub.nextCharge})` : ""}</dd></div>
             <div><dt>Last seen</dt><dd>{sub.lastSeen ?? "—"}</dd></div>
             <div><dt>Why Opus flagged it</dt><dd>{sub.reason || "—"}</dd></div>

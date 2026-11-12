@@ -713,3 +713,6 @@ body { background-image: radial-gradient(color-mix(in srgb, var(--ink) 9%, trans
 .aq-done-main { flex: 1; min-width: 0; display: flex; flex-direction: column; } .aq-done-main small { color: var(--ink-3); }
 .aq-empty { border: 2px dashed var(--ink-3); border-radius: 12px; padding: 28px 24px; display: flex; flex-direction: column; gap: 6px; } .aq-empty p { margin: 0; color: var(--ink-2); }
 .aq-prompt { font: 400 .875rem var(--mono); color: var(--gold-ink) !important; }
+.pill.v-cancel { color: #fff; background: var(--bad); border-color: var(--bad); }
+:root[data-theme="dark"] .pill.v-cancel { color: #000; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .pill.v-cancel { color: #000; } }

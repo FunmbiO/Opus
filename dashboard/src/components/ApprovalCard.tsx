@@ -8,7 +8,7 @@ interface Props {
   onApprove: () => void; onDismiss: () => void; onOpen: () => void;
 }
 
-const VERDICT: Record<string, string> = { keep: "Keep", review: "Worth a look", unclear: "Unclear", lapsed: "Lapsed" };
+const VERDICT: Record<string, string> = { keep: "Keep", review: "Worth a look", cancel: "Consider cancelling", unclear: "Unclear", lapsed: "Lapsed" };
 
 function Facts({ sub, now }: { sub: Sub; now: string }) {
   return (
