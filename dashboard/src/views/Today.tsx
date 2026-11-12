@@ -30,7 +30,7 @@ export function Today({ s, go, dismissAlert, runTriage, busy, openDraft }: Props
         <div className="stage-copy">
           <CarMark className="stage-car" />
           <div className="eyebrow">{new Date(s.now).toLocaleDateString("en-CA", { weekday: "long", month: "long", day: "numeric" })}</div>
-          <h1>{greeting(s.now)}, {s.user}.</h1>
+          <h1>{greeting(s.now)}, <em>{s.user}</em>.</h1>
           <p className="lede">
             {total} email{total === 1 ? "" : "s"} in the last day, {s.drafts.length} draft{s.drafts.length === 1 ? "" : "s"} waiting for you
             {pending.length ? `, and ${pending.length} thing${pending.length === 1 ? "" : "s"} for you to decide.` : "."}

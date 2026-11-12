@@ -662,3 +662,13 @@ body { background: radial-gradient(rgba(245,245,245,.09) 1px, transparent 1.5px)
 .panel::before { display: none; }
 .sample, .badge, .pill, .chip, .btn, .search, .inp, .idea, .rowbtn, .alert, .panel, .lockcard, .toast, .banner, .palette, .drawer, kbd { border-radius: 4px; }
 .panel, .alert, .lockcard, .palette, .rowbtn { border-radius: 6px; }
+
+/* terminal headlines */
+h1 { font-family: var(--mono); font-weight: 600; font-size: clamp(1.9rem, 4.4vw, 2.75rem); line-height: 1.1; letter-spacing: -.03em; text-wrap: balance; }
+h2, h3 { font-family: var(--mono); font-weight: 600; letter-spacing: -.01em; }
+.hero .eyebrow, .stage .eyebrow { font: 400 .875rem var(--mono); text-transform: none; letter-spacing: 0; color: var(--ink-2); }
+.hero .eyebrow::before, .stage .eyebrow::before { content: "$ "; color: var(--lime); }
+.hero h1 .soft, .stage h1 .soft, .stage h1 em { background: var(--lime); color: #0A0A0A; padding: 0 .16em; font-weight: 600; font-style: normal; }
+.hero h1::after, .stage h1::after { content: ""; display: inline-block; width: .5em; height: .85em; margin-left: 6px; background: var(--lime); vertical-align: -.05em; animation: cursor 1.05s steps(1) infinite; }
+@keyframes cursor { 50% { opacity: 0; } }
+.lede { color: var(--ink-2); font-size: 1.1rem; }
