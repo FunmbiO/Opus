@@ -280,6 +280,12 @@ export interface ActivityInput {
   costUsd?: number;
 }
 
+/**
+ * Summaries often contain text from incoming email (a subject, a sender). Control characters and line breaks are
+ * flattened and the length is capped, so a crafted email cannot forge extra log lines or fill the database.
+ */
+export const cleanForLog = (v: string, max = 500) => v.replace(/[\u0000-\u001f\u007f\u2028\u2029]+/g, " ").slice(0, max);
+
 /** Every action the agent takes goes through here. This is the audit trail. */
 export function logActivity(a: ActivityInput) {
   run(
@@ -288,8 +294,8 @@ export function logActivity(a: ActivityInput) {
     nowIso(),
     a.kind,
     a.job,
-    a.tool ?? null,
-    a.summary,
+    a.tool ? cleanForLog(a.tool, 80) : null,
+    cleanForLog(a.summary),
     a.model ?? null,
     a.inputTokens ?? 0,
     a.outputTokens ?? 0,
