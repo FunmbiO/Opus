@@ -593,3 +593,11 @@ body { overscroll-behavior-y: none; }
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --lift: #34342f; --on-green: #000000; --mark: #d2b072; } }
 :root[data-theme="dark"] { --lift: #34342f; --on-green: #000000; --mark: #d2b072; }
+
+/* dot-grid ground (replaces the old glow) */
+body { background-image: radial-gradient(color-mix(in srgb, var(--ink) 9%, transparent) 1px, transparent 1.5px); background-size: 22px 22px; background-attachment: fixed; }
+:root[data-theme="dark"] body { background: radial-gradient(rgba(245,245,240,.09) 1px, transparent 1.5px) 0 0 / 22px 22px, var(--paper); background-attachment: fixed; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) body { background: radial-gradient(rgba(245,245,240,.09) 1px, transparent 1.5px) 0 0 / 22px 22px, var(--paper); background-attachment: fixed; } }
+.panel::before { display: none; }
+.btn, .chip, .search, .inp, .idea, .sample, .badge, .pill, kbd, .toast, .banner { border-radius: 4px; }
+.panel, .alert, .lockcard, .palette, .rowbtn, .drawer { border-radius: 6px; }
