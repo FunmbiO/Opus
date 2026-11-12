@@ -116,7 +116,8 @@ export function Approvals({ s, decide, undo, busy }: Props) {
       {opened && (
         <ApprovalDrawer a={opened} s={s} busy={busy === opened.id} onClose={() => setOpenId(null)}
           onApprove={() => { decide(opened.id, "approve"); setOpenId(null); }}
-          onDismiss={() => { decide(opened.id, "dismiss"); setOpenId(null); }} />
+          onDismiss={() => { decide(opened.id, "dismiss"); setOpenId(null); }}
+          onUndo={() => { undo(opened.id); setOpenId(null); }} />
       )}
     </div>
   );

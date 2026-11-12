@@ -6,10 +6,10 @@ import { Icon } from "./Icons";
 
 interface Props {
   a: Approval; s: Pick<State, "subscriptions" | "now">; busy: boolean;
-  onClose: () => void; onApprove: () => void; onDismiss: () => void;
+  onClose: () => void; onApprove: () => void; onDismiss: () => void; onUndo: () => void;
 }
 
-export function ApprovalDrawer({ a, s, busy, onClose, onApprove, onDismiss }: Props) {
+export function ApprovalDrawer({ a, s, busy, onClose, onApprove, onDismiss, onUndo }: Props) {
   useEffect(() => {
     const f = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     window.addEventListener("keydown", f);
@@ -46,7 +46,12 @@ export function ApprovalDrawer({ a, s, busy, onClose, onApprove, onDismiss }: Pr
             <button className="btn" disabled={busy} onClick={onDismiss}>Not now</button>
           </div>
         ) : (
-          <p className="drawer-note">{a.status === "dismissed" ? "You said not now." : a.result ?? "Prepared."}</p>
+          <>
+            <p className="drawer-note">{a.status === "dismissed" ? "You said not now." : a.result ?? "Prepared."}</p>
+            {a.status === "dismissed" && (
+              <div className="sub-actions"><button className="btn" disabled={busy} onClick={onUndo}>Undo: put it back in the queue</button></div>
+            )}
+          </>
         )}
       </aside>
     </div>
