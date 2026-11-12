@@ -14,9 +14,14 @@ makes it write the steps or a draft. It never cancels, sends, deletes or moves m
 6. **Safety panel**: the three permission tiers (Auto, Needs approval, Never).
 7. **History**: what was decided, with the result.
 
+## Undo for "Not now"
+A dismissed item can be put back in the queue: `POST /api/approvals/:id/undo`.
+- Only **dismissed** items can be restored. An approved item has already produced steps or a Gmail draft, so it can't be recalled.
+- If the same subscription already has a pending approval (for example you asked again after dismissing), the undo is refused with a 409 instead of creating a duplicate.
+- Undo only changes the approval's status. It never sends, cancels or deletes anything.
+
 ## Not in scope
-No new agent endpoints. Approve and dismiss still go through `POST /api/approvals/:id/(approve|dismiss)`.
-No undo for a dismissed item, because the agent has no endpoint for it.
+Approve and dismiss still go through `POST /api/approvals/:id/(approve|dismiss)`.
 
 ## Screens
 ![Queue](design/screens/aq-queue.png)
