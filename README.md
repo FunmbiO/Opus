@@ -20,7 +20,7 @@ The dashboard also runs on its own with sample data (`npm run dev` in `dashboard
 See `docs/SETUP.md`. In short: Anthropic API key (set a Console spend limit), Google OAuth (`npm run auth`), optional Telegram bot, then `npm run serve` with `AUTORUN=1`.
 
 ## Approval queue
-Anything with consequences waits in the queue for you. Approving only makes Opus write the steps; it never cancels or sends for you. Keys: `j`/`k` move, `a` approve, `d` not now, `Enter` details. See [docs/approval-queue.md](docs/approval-queue.md).
+Anything with consequences waits in the queue for you. Approving only makes Opus write the steps; it never cancels or sends for you. Keys: `j`/`k` move, `a` approve, `d` not now, `u` undo, `Enter` details. See [docs/approval-queue.md](docs/approval-queue.md).
 
 ## Cost
 Target low $20s a month; alert at $100 (Telegram/console). Per-run cap $0.25, hard stop at $100. Triage uses Haiku, drafts use Sonnet, bulk senders are sorted by rules for free.

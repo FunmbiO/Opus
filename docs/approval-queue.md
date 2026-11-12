@@ -10,7 +10,7 @@ makes it write the steps or a draft. It never cancels, sends, deletes or moves m
 3. **Cards**: title, why Opus suggested it, the linked subscription's price, next charge and verdict,
    and a plain "if you approve" line saying exactly what will happen (and that nothing is cancelled).
 4. **Details drawer**: everything about one item, with Approve and Not now.
-5. **Keyboard**: `j`/`k` move, `a` approve, `d` not now, `Enter` details, `Esc` close.
+5. **Keyboard**: `j`/`k` move, `a` approve, `d` not now, `u` undo the last not-now, `Enter` details, `Esc` close.
 6. **Safety panel**: the three permission tiers (Auto, Needs approval, Never).
 7. **History**: what was decided, with the result.
 
@@ -19,6 +19,13 @@ A dismissed item can be put back in the queue: `POST /api/approvals/:id/undo`.
 - Only **dismissed** items can be restored. An approved item has already produced steps or a Gmail draft, so it can't be recalled.
 - If the same subscription already has a pending approval (for example you asked again after dismissing), the undo is refused with a 409 instead of creating a duplicate.
 - Undo only changes the approval's status. It never sends, cancels or deletes anything.
+
+### In the UI
+- After "Not now", a bar offers **Undo (u)** for ten seconds.
+- Dismissed rows in the history have an **Undo** button, and so does their details drawer.
+- Approved rows have no Undo.
+
+![Undo bar](design/screens/aq-undo-bar.png)
 
 ## Not in scope
 Approve and dismiss still go through `POST /api/approvals/:id/(approve|dismiss)`.

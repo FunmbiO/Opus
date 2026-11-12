@@ -3,6 +3,7 @@
 ## Unreleased
 ### Approval queue
 - New approval queue page: summary strip, kind filter and sort, cards with the linked subscription facts and an "if you approve" line, details drawer, keyboard shortcuts (j/k/a/d/Enter/Esc), plain-language safety tiers, and a decided history.
+- Undo for "Not now": `POST /api/approvals/:id/undo` (dismissed items only, refuses duplicates), a ten-second undo bar with the `u` key, and Undo buttons in the history and drawer. Covered by `npm run test:undo`.
 - Fixed: sample approvals now show as pending in preview mode.
 
 ### Design
