@@ -1,0 +1,15 @@
+# Never send these into the image: secrets, personal data, build output and history.
+.git
+**/node_modules
+**/dist
+**/data
+.env
+.env.*
+!.env.example
+agent/style.md
+seed/*.json
+!seed/*.example.json
+*.zip
+*.db
+*.db-*
+docs/design/screens
