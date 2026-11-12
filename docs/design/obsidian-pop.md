@@ -1,5 +1,7 @@
 # Obsidian Pop
 
+> Superseded by [opus-style.md](opus-style.md).
+
 The chosen Opus palette ("G" in the palette options board). A near-black ground with
 a real gold as the main action colour, and small, sharp-edged pops that read as signals.
 

@@ -2,6 +2,7 @@
 
 ## Unreleased
 ### Design
+- Final direction: the original Opus palette and fonts, plus pieces of NitroDrp (dot grid, `$` eyebrows, gold marker and cursor, mono labels, offset shadows, dashed cards). Earlier Obsidian Pop and NitroDrp-palette attempts are superseded.
 - Restyled to the NitroDrp look: Night Signal (dark) and Concrete Signal (light), dot-grid ground, Space Mono headlines with `$` eyebrows, lime marker and cursor, offset-shadow cards and buttons, orange primary actions.
 - Earlier Obsidian Pop work below is superseded.
 - New Obsidian Pop palette: ground `#0A0A09`, gold `#CFA349`, pink, orange, burgundy and green signals.
