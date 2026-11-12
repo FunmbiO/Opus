@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { State } from "../types";
 import { ago } from "../format";
 import { Icon } from "../components/Icons";
+import { ApprovalDrawer } from "../components/ApprovalDrawer";
 import { ApprovalCard } from "../components/ApprovalCard";
 import { ApprovalSummary } from "../components/ApprovalSummary";
 import { decidedOf, filterApprovals, pendingOf, sortApprovals, type KindFilter, type SortKey } from "../approvals";
@@ -11,9 +12,11 @@ interface Props { s: State; decide: (id: string, action: "approve" | "dismiss") 
 export function Approvals({ s, decide, busy }: Props) {
   const [filter, setFilter] = useState<KindFilter>("all");
   const [sort, setSort] = useState<SortKey>("newest");
+  const [openId, setOpenId] = useState<string | null>(null);
   const all = pendingOf(s.approvals);
   const pending = sortApprovals(filterApprovals(all, filter), sort, s);
   const done = decidedOf(s.approvals);
+  const opened = openId ? s.approvals.find((x) => x.id === openId) ?? null : null;
   return (
     <div className="view">
       <header className="hero slim">
@@ -46,7 +49,7 @@ export function Approvals({ s, decide, busy }: Props) {
       <div className="aq-list">
         {pending.map((a) => (
           <ApprovalCard key={a.id} a={a} s={s} busy={busy === a.id} selected={false}
-            onApprove={() => decide(a.id, "approve")} onDismiss={() => decide(a.id, "dismiss")} onOpen={() => undefined} />
+            onApprove={() => decide(a.id, "approve")} onDismiss={() => decide(a.id, "dismiss")} onOpen={() => setOpenId(a.id)} />
         ))}
       </div>
 
@@ -65,6 +68,11 @@ export function Approvals({ s, decide, busy }: Props) {
             ))}
           </div>
         </>
+      )}
+      {opened && (
+        <ApprovalDrawer a={opened} s={s} busy={busy === opened.id} onClose={() => setOpenId(null)}
+          onApprove={() => { decide(opened.id, "approve"); setOpenId(null); }}
+          onDismiss={() => { decide(opened.id, "dismiss"); setOpenId(null); }} />
       )}
     </div>
   );
