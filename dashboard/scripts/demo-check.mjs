@@ -13,6 +13,7 @@ import { chromium } from "playwright";
 const root = new URL("..", import.meta.url).pathname;
 const dist = resolve(root, "dist-demo");
 const vercel = JSON.parse(readFileSync(resolve(root, "..", "vercel.json"), "utf8"));
+const dashVercel = JSON.parse(readFileSync(resolve(root, "vercel.json"), "utf8"));
 if (!existsSync(dist)) { console.error("dist-demo is missing. Run: npm run build:demo"); process.exit(1); }
 
 // The site that must be able to embed the demo. It comes from your portfolio's own canonical address
@@ -33,6 +34,11 @@ for (const want of ["default-src 'self'", "object-src 'none'", "base-uri 'none'"
 assert.ok(!/script-src[^;]*(unsafe-inline|unsafe-eval)/.test(csp), "scripts must not allow inline or eval");
 assert.ok(!vercel.headers.flatMap((b) => b.headers).some((h) => h.key === "X-Frame-Options"), "X-Frame-Options would override frame-ancestors and block the embed");
 ok(`vercel.json is strict and allows framing only by: ${ancestors.join(" ")}`);
+
+assert.deepEqual(dashVercel.headers, vercel.headers, "dashboard/vercel.json and the root vercel.json must have identical headers (run scripts/set-embed-origin.mjs to change both)");
+assert.equal(dashVercel.outputDirectory, "dist-demo");
+assert.equal(dashVercel.buildCommand, "npm run build:demo");
+ok("dashboard/vercel.json matches the root config");
 
 // ---- 2. nothing private in the build ---------------------------------------------------
 const files = [];

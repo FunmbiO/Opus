@@ -17,13 +17,19 @@ would be displaying it. Opus also needs a long-running server with a database, w
 Hardening ([SECURITY.md](SECURITY.md)) makes the private one safe on your network; it does not make it a good public page.
 
 ## 1. Deploy the demo on Vercel
-The repo's root `vercel.json` already tells Vercel how to build it, so there is nothing to type in.
-1. vercel.com → **Add New… → Project** → import `FunmbiO/Opus`.
-2. Leave **Root Directory** as the repo root. **Framework Preset: Other.** Do not add any environment variables.
-3. **Production Branch**: the branch that contains `vercel.json`. Until you merge to `main`, that is `claude/elegant-dirac-1vk5ac`
-   (Project → Settings → Git → Production Branch).
-4. Deploy. Name the project something short like `opus-demo`, which gives `https://opus-demo.vercel.app`.
+Deploy the **`dashboard`** folder as its own project. The repo root also holds the private agent, which Vercel might try to
+treat as a second app, so pointing it at `dashboard` keeps it simple.
+1. vercel.com → **Add New… → Project** → import `FunmbiO/Opus` (from `main`).
+2. On the configure screen, click **Edit** next to **Root Directory** and choose **`dashboard`**.
+3. Leave everything else alone. `dashboard/vercel.json` already sets the install command, the build command
+   (`npm run build:demo`), the output folder (`dist-demo`) and the security headers. Add no environment variables.
+4. Make sure **Include source files outside of the Root Directory in the Build Step** is on (Project → Settings → General).
+   It is on by default, and the demo needs it to read the sample data in `shared/`.
+5. Deploy. Name the project something short like `opus-demo`, which gives `https://opus-demo.vercel.app`.
    You already use `demo.jadedmedia.ca` for NitroDrp, so `opus.jadedmedia.ca` would fit (Project → Settings → Domains).
+
+Do **not** accept an auto-suggested "multi-service" setup that includes the `agent`: the agent is your private server and
+must never be deployed publicly.
 
 ## 2. Let your portfolio frame it
 Your portfolio's `vercel.json` has a strict `frame-src` list, so the new address has to be added there. In the
@@ -50,7 +56,7 @@ to taste. `allow-same-origin` is needed (the theme setting uses local storage); 
 The demo only allows framing by `https://jaded-works.vercel.app` (your portfolio's canonical address). If you serve it from a
 custom domain too, list every origin that should be allowed, then redeploy:
 ```bash
-node dashboard/scripts/set-embed-origin.mjs https://jaded-works.vercel.app https://your-custom-domain.com
+node dashboard/scripts/set-embed-origin.mjs https://jaded-works.vercel.app https://your-custom-domain.com   # updates both vercel.json files
 ```
 Only exact `https://` origins are accepted. Wildcards are refused on purpose.
 

@@ -7,6 +7,7 @@
 - `npm run test:security` attacks a running server; every protection was also broken on purpose to confirm the tests notice. Safe `npm audit` fixes applied.
 
 ### Portfolio demo
+- Deploy the demo with Vercel Root Directory = `dashboard` (`dashboard/vercel.json`); the root `vercel.json` is kept in sync and `check:demo` fails if they differ.
 - Public sample-data build (`npm run build:demo`) with no network access, `?embed=1`, Vercel config, and `npm run check:demo` (in `dashboard/`). See `docs/EMBED.md`.
 
 ### iPhone web app
