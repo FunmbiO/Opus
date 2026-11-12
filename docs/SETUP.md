@@ -23,6 +23,7 @@ Edit `agent/style.md`. Review the first drafts closely; the `[CONFIRM: ...]` mar
 
 ## 6. Later: home server
 Run in Docker on the box, keep `HOST=127.0.0.1`, reach it through Tailscale, set `API_TOKEN`. Never expose the port to the internet.
+The Docker and Tailscale setup is in the repo. Follow [DEPLOY.md](DEPLOY.md).
 
 ## Caveats
 Not yet tested against a real API key or Gmail. Amounts in the audit are assumed CAD. Draft quality is unverified until you try it.

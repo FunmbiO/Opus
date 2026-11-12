@@ -19,6 +19,9 @@ The dashboard also runs on its own with sample data (`npm run dev` in `dashboard
 ## Go live
 See `docs/SETUP.md`. In short: Anthropic API key (set a Console spend limit), Google OAuth (`npm run auth`), optional Telegram bot, then `npm run serve` with `AUTORUN=1`.
 
+## Run it on a server
+`docker compose up -d --build` runs Opus behind Tailscale, with no port open to the internet. `npm run check:deploy` enforces that. See [docs/DEPLOY.md](docs/DEPLOY.md), which also lists what has and has not been tested.
+
 ## Approval queue
 Anything with consequences waits in the queue for you. Approving only makes Opus write the steps; it never cancels or sends for you. Keys: `j`/`k` move, `a` approve, `d` not now, `u` undo, `Enter` details. See [docs/approval-queue.md](docs/approval-queue.md).
 

@@ -1,6 +1,11 @@
 # Changelog
 
 ## Unreleased
+### Deployment
+- Docker and Tailscale setup: multi-stage `Dockerfile`, `docker-compose.yml` (Opus shares a Tailscale container's network, no published ports), `tailscale serve` config (no Funnel), `.dockerignore`, `.env.example`, `deploy/backup.sh` (data and key in separate archives), and `docs/DEPLOY.md`.
+- `npm run check:deploy` (part of `npm run check`) fails if the setup could expose Opus or leak secrets.
+- Not yet run against a real Docker daemon, Tailscale account or server. See DEPLOY.md.
+
 ### Approval queue
 - New approval queue page: summary strip, kind filter and sort, cards with the linked subscription facts and an "if you approve" line, details drawer, keyboard shortcuts (j/k/a/d/Enter/Esc), plain-language safety tiers, and a decided history.
 - Undo for "Not now": `POST /api/approvals/:id/undo` (dismissed items only, refuses duplicates), a ten-second undo bar with the `u` key, and Undo buttons in the history and drawer. Covered by `npm run test:undo`.
