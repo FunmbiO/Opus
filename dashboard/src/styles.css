@@ -638,3 +638,12 @@ body { background-image: radial-gradient(color-mix(in srgb, var(--ink) 9%, trans
 .mode, .ss-row, .kbtn { font-family: var(--mono); } .kbtn { white-space: nowrap; font-size: .76rem; } .mode { white-space: nowrap; font-size: .72rem; }
 .tabbar button.on { color: var(--nav-ink); }
 .tabbar button.on svg { color: var(--mark); }
+
+/* chips, pills, small labels in mono */
+.chip { font-family: var(--mono); font-weight: 700; font-size: .8rem; border-width: 2px; margin-right: 6px; }
+.pill, .badge, .sample, .txpend, .pal-group, .tally .l, .day, .cb-pct, .cost, .when { font-family: var(--mono); }
+.pill, .txpend, .sample, .pal-group { text-transform: uppercase; letter-spacing: .05em; }
+.sub-title strong, .amt, .big, .meter-value, .tl-total { font-family: var(--display); }
+.sub, .approval, .rows > :last-child { border-color: var(--hair); border-width: 1px; }
+.v-review, .st-contract { background: var(--mark); color: var(--on-mark); }
+.v-keep, .st-booked { color: var(--on-green); background: var(--green); border-color: var(--green); }
