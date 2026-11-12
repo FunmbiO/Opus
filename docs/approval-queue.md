@@ -17,3 +17,15 @@ makes it write the steps or a draft. It never cancels, sends, deletes or moves m
 ## Not in scope
 No new agent endpoints. Approve and dismiss still go through `POST /api/approvals/:id/(approve|dismiss)`.
 No undo for a dismissed item, because the agent has no endpoint for it.
+
+## Screens
+![Queue](design/screens/aq-queue.png)
+
+![Details drawer](design/screens/aq-drawer.png)
+
+Mobile: ![Mobile](design/screens/aq-mobile.png)
+
+## Code
+- `dashboard/src/views/Approvals.tsx`: the page, filters, sorting and keyboard handling.
+- `dashboard/src/approvals.ts`: pure helpers (kind labels, linked subscription, savings, sorting).
+- `dashboard/src/components/`: `ApprovalSummary`, `ApprovalCard`, `ApprovalDrawer`, `SafetyTiers`.

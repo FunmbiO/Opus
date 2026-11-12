@@ -1,6 +1,10 @@
 # Changelog
 
 ## Unreleased
+### Approval queue
+- New approval queue page: summary strip, kind filter and sort, cards with the linked subscription facts and an "if you approve" line, details drawer, keyboard shortcuts (j/k/a/d/Enter/Esc), plain-language safety tiers, and a decided history.
+- Fixed: sample approvals now show as pending in preview mode.
+
 ### Design
 - Final direction: the original Opus palette and fonts, plus pieces of NitroDrp (dot grid, `$` eyebrows, gold marker and cursor, mono labels, offset shadows, dashed cards). Earlier Obsidian Pop and NitroDrp-palette attempts are superseded.
 - Restyled to the NitroDrp look: Night Signal (dark) and Concrete Signal (light), dot-grid ground, Space Mono headlines with `$` eyebrows, lime marker and cursor, offset-shadow cards and buttons, orange primary actions.
