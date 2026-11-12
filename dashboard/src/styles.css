@@ -617,3 +617,15 @@ body { background-image: radial-gradient(color-mix(in srgb, var(--ink) 9%, trans
 .btn.primary:active:not(:disabled) { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
 .btn.small { font-size: .78rem; min-height: 32px; }
 .textbtn, .link { font-family: var(--mono); font-weight: 700; font-size: .82rem; }
+
+/* cards lift with a hard offset shadow */
+.panel, .alert, .lockcard { box-shadow: 5px 5px 0 var(--lift); border-width: 2px; }
+.alert { border-left-width: 2px; }
+.alert.sev-high { border-color: var(--bad); box-shadow: 5px 5px 0 var(--bad); }
+.alert.sev-medium { border-color: var(--gold-ink); }
+.panel-head { border-bottom-width: 1px; }
+.rowbtn { border-width: 2px; box-shadow: 4px 4px 0 var(--lift); }
+.rowbtn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--lift); }
+.hero, .stage { border-bottom-width: 1px; border-bottom-color: var(--hair); }
+.palette { box-shadow: 8px 8px 0 var(--gold); }
+.drawer { box-shadow: -6px 0 0 var(--lift); }
