@@ -657,3 +657,10 @@ body { background-image: radial-gradient(color-mix(in srgb, var(--ink) 9%, trans
 .composer textarea, .inp, .search { border-width: 2px; }
 .inp:focus, .money:focus-within, .search:focus-within { box-shadow: 3px 3px 0 var(--gold); }
 .toast { font-family: var(--mono); box-shadow: 4px 4px 0 var(--lift); border: 2px solid var(--ink); border-left-width: 6px; }
+
+/* preview notice: quiet dashed box instead of a solid bar */
+.banner { background: var(--paper-2); color: var(--ink); border: 2px dashed var(--gold-ink); font-family: var(--mono); font-size: .76rem; padding: 8px 12px; margin-bottom: 20px; font-weight: 400; }
+.banner.warn { background: var(--bad); color: #fff; border: 2px solid var(--ink); }
+.banner.warn .btn { background: #fff; color: #111; }
+.sample { background: var(--mark); color: var(--on-mark); }
+@media (max-width: 880px) { .banner { font-size: .7rem; padding: 6px 10px; } }
