@@ -644,3 +644,7 @@ body { overscroll-behavior-y: none; }
 
 /* tab bar keeps the body face so long labels fit on a phone */
 .tabbar button { font-family: var(--body); letter-spacing: 0; }
+
+/* neutral verdict blocks need dark text in both themes */
+.vv-unclear, .vv-lapsed { --vt: #0A0A09; }
+.v-unclear, .v-lapsed { color: var(--ink-2); }
