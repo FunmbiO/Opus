@@ -29,6 +29,10 @@ if (compose) {
   if (!/network_mode\s*:\s*service:tailscale/.test(c)) fail("opus must share the tailscale container's network (network_mode: service:tailscale).");
   if (!/cap_drop\s*:\s*\n\s*-\s*ALL/.test(c)) fail("opus must drop all Linux capabilities (cap_drop: ALL).");
   if (!/no-new-privileges:true/.test(c)) fail("opus must set no-new-privileges.");
+  // environment: beats env_file, so these cannot be overridden from agent/.env.
+  if (!/^\s+HOST\s*:\s*["']?127\.0\.0\.1["']?\s*$/m.test(c)) fail("docker-compose.yml must pin HOST: 127.0.0.1 in environment (it wins over agent/.env).");
+  if (!/^\s+PORT\s*:\s*["']?8787["']?\s*$/m.test(c)) fail("docker-compose.yml must pin PORT: 8787 so it matches deploy/tailscale-serve.json.");
+  if (!/^\s+OPUS_KEY_DIR\s*:\s*\/keys\s*$/m.test(c)) fail("docker-compose.yml must pin OPUS_KEY_DIR: /keys.");
   if (!/-\s*data:\/app\/agent\/data\b/.test(c)) fail("the data volume must be mounted at /app/agent/data.");
   if (!/-\s*keys:\/keys\b/.test(c)) fail("the master key must live on its own volume (keys:/keys), apart from data.");
   if (/TS_AUTHKEY\s*:\s*["']?tskey-/.test(c)) fail("a Tailscale auth key is written into docker-compose.yml.");

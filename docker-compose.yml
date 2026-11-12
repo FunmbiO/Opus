@@ -28,6 +28,12 @@ services:
       - tailscale
     env_file:
       - agent/.env
+    # These win over agent/.env, so a stray HOST=0.0.0.0 there cannot expose Opus.
+    environment:
+      HOST: 127.0.0.1
+      PORT: "8787"
+      DB_PATH: /app/agent/data/aide.db
+      OPUS_KEY_DIR: /keys
     volumes:
       - data:/app/agent/data
       - keys:/keys
