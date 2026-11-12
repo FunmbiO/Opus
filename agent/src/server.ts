@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import { config } from "./config.js";
 import { get, logActivity, nowIso, run } from "./db.js";
 import { getContract, saveSettings, updateContract, buildPdf, createContract } from "./contracts.js";
-import { decideApproval, runAsk, runTriage, runWebInquiry, type Deps } from "./jobs.js";
+import { decideApproval, runAsk, runTriage, runWebInquiry, undoApproval, type Deps } from "./jobs.js";
 import { sendContract, SendRefused } from "./send.js";
 import { unlockAttachment, UnlockError } from "./unlock.js";
 import { reportIfAuthError } from "./reminders.js";
@@ -135,6 +135,16 @@ export function startServer(deps: Deps) {
         }
 
         if (req.method === "GET" && path === "/api/state") return json(res, 200, buildState());
+
+        // Put a dismissed approval back in the queue. Status change only; nothing is sent or cancelled.
+        const undo = /^\/api\/approvals\/([^/]+)\/undo$/.exec(path);
+        if (req.method === "POST" && undo) {
+          const r = undoApproval(undo[1]!);
+          if (r === "missing") return json(res, 404, { error: "No such approval." });
+          if (r === "not-dismissed") return json(res, 409, { error: "Only items you said not now to can be put back." });
+          if (r === "duplicate") return json(res, 409, { error: "That is already waiting in the queue." });
+          return json(res, 200, buildState());
+        }
 
         const m = /^\/api\/(approvals|subscriptions|alerts|drafts)\/([^/]+)\/(approve|dismiss|keep|prepare)$/.exec(path);
         if (req.method === "POST" && m) {
