@@ -38,11 +38,14 @@ const TABS: { id: Tab; label: string; icon: string }[] = [
 /** Seven tabs do not fit under a thumb, so the phone bar shows four and tucks the rest under "More". */
 const PRIMARY: Tab[] = ["today", "ask", "clients", "approvals"];
 
+/** Home-screen shortcuts open a page directly: /?tab=ask */
+const startTab = (): Tab => { const t = new URLSearchParams(location.search).get("tab"); return TABS.some((x) => x.id === t) ? (t as Tab) : "today"; };
+
 export default function App() {
   const [s, setS] = useState<State | null>(null);
   const [needAuth, setNeedAuth] = useState(false);
   const [settingUp, setSettingUp] = useState(false);
-  const [tab, setTab] = useState<Tab>("today");
+  const [tab, setTab] = useState<Tab>(startTab);
   const [busy, setBusy] = useState<string | null>(null);
   const [toast, setToast] = useState("");
   const [theme, setTheme] = useState<Theme>(readTheme);
