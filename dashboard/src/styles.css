@@ -750,3 +750,25 @@ h2, h3 { font-family: var(--mono); font-weight: 600; letter-spacing: -.01em; }
 .node { border-radius: 2px; }
 .node.k-triage, .node.k-subs { border-color: var(--accent); background: var(--accent); }
 .node.k-draft { border-color: var(--lime); background: var(--lime); } .node.k-alert { border-color: var(--pop); background: var(--pop); }
+
+/* meters, charts, cost blocks */
+.ruler::before { border: 2px solid var(--line); background: var(--paper); border-radius: 3px; height: 22px; }
+.ruler-fill { background: var(--accent); border: 2px solid var(--line); border-radius: 3px; }
+.lvl-nearing .ruler-fill, .lvl-target .ruler-fill, .lvl-warn .ruler-fill { background: var(--accent); }
+.lvl-alert .ruler-fill { background: var(--pop); }
+.meter-note { color: var(--lime); font-family: var(--mono); }
+.lvl-nearing .meter-note, .lvl-target .meter-note, .lvl-warn .meter-note { color: var(--accent); }
+.lvl-alert .meter-note { color: var(--pop); }
+.pin { background: var(--lime); } .pin span { color: var(--lime); font-family: var(--mono); }
+.pin.limit { background: var(--pop); } .pin.limit span { color: var(--pop); }
+.split-bar, .catbar, .week { gap: 3px; } .seg-keep { background: var(--lime); } .seg-review { background: var(--accent); }
+.catbar i, .dcol.now i, .b-plan, .k-plan { background: var(--accent); } .b-save, .k-save { background: var(--lime); }
+.ss-bar { background: var(--hair); }
+.vv-keep { --vc: var(--lime); --vt: #0A0A0A; } .vv-review { --vc: var(--accent); --vt: #0A0A0A; }
+.vv-unclear, .vv-lapsed { --vc: #8A8A8A; --vt: #0A0A0A; }
+.cb { border: 2px solid var(--line); border-radius: 4px; } .cb:hover { transform: translate(-2px, -2px); box-shadow: 3px 3px 0 var(--pop); filter: none; }
+.cb-amt { font-family: var(--mono); }
+.k-keep { background: var(--lime); } .k-review { background: var(--accent); }
+.tl-dot { border-radius: 2px; } .tl-axis { background: var(--hair); }
+.made { background: var(--green-soft); border-left: 4px solid var(--lime); border-radius: 4px; } .made svg { color: var(--lime); }
+.steps svg { color: var(--lime); }
