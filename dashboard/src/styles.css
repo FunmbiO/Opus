@@ -716,3 +716,7 @@ body { background-image: radial-gradient(color-mix(in srgb, var(--ink) 9%, trans
 .pill.v-cancel { color: #fff; background: var(--bad); border-color: var(--bad); }
 :root[data-theme="dark"] .pill.v-cancel { color: #000; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .pill.v-cancel { color: #000; } }
+@media (max-width: 880px) {
+  .aq-summary { gap: 8px; } .aq-stat { padding: 8px 12px; box-shadow: 3px 3px 0 var(--lift); } .aq-stat b { font-size: 1.4rem; } .aq-stat span { font-size: .68rem; }
+  .aq-card { padding: 16px; } .aq-title { font-size: 1.15rem; }
+}
