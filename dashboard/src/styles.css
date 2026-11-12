@@ -647,3 +647,13 @@ body { background-image: radial-gradient(color-mix(in srgb, var(--ink) 9%, trans
 .sub, .approval, .rows > :last-child { border-color: var(--hair); border-width: 1px; }
 .v-review, .st-contract { background: var(--mark); color: var(--on-mark); }
 .v-keep, .st-booked { color: var(--on-green); background: var(--green); border-color: var(--green); }
+
+/* Ask: dashed idea cards, offset bubbles */
+.idea { border: 2px dashed var(--ink); border-radius: 12px; font-family: var(--mono); font-weight: 700; font-size: .86rem; }
+.idea:hover { background: var(--paper-2); color: var(--ink); border-style: solid; box-shadow: 4px 4px 0 var(--gold); transform: translate(-2px, -2px); }
+.bubble { border-radius: 6px; border-width: 2px; }
+.msg.user .bubble { box-shadow: 3px 3px 0 var(--lift); }
+.composer { border-top-width: 1px; }
+.composer textarea, .inp, .search { border-width: 2px; }
+.inp:focus, .money:focus-within, .search:focus-within { box-shadow: 3px 3px 0 var(--gold); }
+.toast { font-family: var(--mono); box-shadow: 4px 4px 0 var(--lift); border: 2px solid var(--ink); border-left-width: 6px; }
