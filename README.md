@@ -30,3 +30,6 @@ The dashboard uses the Obsidian Pop palette: near-black ground, gold for the mai
 ## Layout
 - `agent/` the agent, API server, SQLite. `src/tools.ts` is the complete list of what the model may do.
 - `dashboard/` React + Vite UI. `shared/audit.json` is sample data; your own setup goes in `seed/` (see `docs/SETUP.md`).
+
+## License
+MIT. See [LICENSE](LICENSE).
