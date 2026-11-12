@@ -667,3 +667,12 @@ body { background-image: radial-gradient(color-mix(in srgb, var(--ink) 9%, trans
 
 /* the logotype keeps the original display face (Space Mono's O reads as a zero) */
 .brand { font-family: var(--display); letter-spacing: -.04em; font-weight: 900; }
+
+/* ---- Approval queue ---- */
+.aq-summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.aq-stat { border: 2px solid var(--ink); background: var(--paper-2); box-shadow: 4px 4px 0 var(--lift); padding: 14px 16px; display: flex; flex-direction: column; gap: 2px; border-radius: 6px; }
+.aq-stat b { font: 900 2rem/1 var(--display); letter-spacing: -.03em; }
+.aq-stat span { font: 400 .76rem var(--mono); color: var(--ink-2); }
+.aq-stat.hot { border-color: var(--gold-ink); } .aq-stat.hot b { color: var(--gold-ink); }
+.aq-stat.save b { color: var(--green); }
+@media (max-width: 880px) { .aq-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

@@ -1,6 +1,7 @@
 import type { State } from "../types";
 import { ago } from "../format";
 import { Icon } from "../components/Icons";
+import { ApprovalSummary } from "../components/ApprovalSummary";
 
 interface Props { s: State; decide: (id: string, action: "approve" | "dismiss") => void; busy: string | null }
 
@@ -16,6 +17,8 @@ export function Approvals({ s, decide, busy }: Props) {
           <p className="lede">Opus only suggests. Approving here makes it write the steps or a draft email. It never cancels or sends for you.</p>
         </div>
       </header>
+
+      <ApprovalSummary approvals={s.approvals} subs={s.subscriptions} />
 
       {pending.length === 0 && <p className="empty big">Nothing to decide right now.</p>}
       <div className="rows">
