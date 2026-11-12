@@ -16,13 +16,14 @@ import { Palette, type Command } from "./components/Palette";
 import { DraftDrawer } from "./components/Drawer";
 import { OMark } from "./components/OMark";
 import { InstallTip } from "./components/InstallTip";
+import { DEMO_BUILD, EMBED } from "./mode";
 import { Boot } from "./components/Boot";
 import { calcTotals, money } from "./format";
 
 type Theme = "system" | "light" | "dark";
 const readTheme = (): Theme => { try { const t = localStorage.getItem("aide-theme"); return t === "light" || t === "dark" || t === "system" ? t : "dark"; } catch { return "dark"; } };
 // The opening animation plays on every load, and again after you sign in.
-const shouldBoot = () => true;
+const shouldBoot = () => !EMBED;
 
 type Tab = "today" | "clients" | "ask" | "budget" | "subs" | "approvals" | "activity";
 const TABS: { id: Tab; label: string; icon: string }[] = [
@@ -309,7 +310,7 @@ export default function App() {
           <div className="brand"><OMark bold size={30} />Opus</div>
           <div><button className="icon-btn" onClick={() => { void refresh(); say("Refreshed"); }} aria-label="Refresh"><Icon name="refresh" /></button><button className="icon-btn" onClick={() => setPalette(true)} aria-label="Search"><Icon name="search" /></button><button className="icon-btn" onClick={cycleTheme} aria-label="Change theme"><Icon name={theme === "light" ? "sun" : "moon"} /></button></div>
         </div>
-        <InstallTip />
+        {!EMBED && <InstallTip />}
         {s.mode === "live" && !s.security.passwordSet && (
           <div className="banner warn">
             <span>Opus has no password yet, so anyone who can reach this page can use it.</span>
@@ -317,7 +318,9 @@ export default function App() {
           </div>
         )}
         {s.mode === "demo" && (
-          <div className="banner">Preview mode. Your subscriptions and alerts are real (from your inbox audit). Drafts, activity, spend and the weekly chart are samples.</div>
+          DEMO_BUILD
+            ? <div className="banner demo-banner">Demo with sample data. Nothing here is real, and nothing you do is saved or sent.</div>
+            : <div className="banner">Preview mode. Your subscriptions and alerts are real (from your inbox audit). Drafts, activity, spend and the weekly chart are samples.</div>
         )}
         {tab === "today" && <Today s={s} go={(t) => setTab(t)} dismissAlert={dismissAlert} runTriage={runTriage} busy={busy === "triage"} openDraft={setDraft} />}
         {tab === "clients" && <Clients s={s} a={clientActions} />}
