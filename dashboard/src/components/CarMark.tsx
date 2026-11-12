@@ -10,7 +10,7 @@ export function CarMark({ bold = false, className = "", title = "Opus" }: { bold
     <svg className={`carmark ${className}`} viewBox="40 100 600 110" role="img" aria-label={title}>
       <defs>
         <linearGradient id={id} x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stopColor="#8a6a2f" /><stop offset=".45" stopColor="#ecd9a6" /><stop offset="1" stopColor="#a98440" />
+          <stop offset="0" stopColor="#9C7A2E" /><stop offset=".45" stopColor="#E8CC8A" /><stop offset="1" stopColor="#CFA349" />
         </linearGradient>
       </defs>
       <path fill={`url(#${id})`} d={bold ? BOLD : FULL} />
