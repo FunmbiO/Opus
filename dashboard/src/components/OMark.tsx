@@ -41,7 +41,7 @@ export function OMark({ bold = false, size = 32, className = "", title = "Opus" 
           <>
             <path fill={`url(#a${id})`} d="M0 55.6L70 58L0 59.4Z" />
             <path fill={`url(#b${id})`} d="M6 64.2L62 66.2L6 65.9Z" />
-            <path fill={`url(#b${id})`} d="M16 71.4L52 72.6L16 72.9Z" />
+            <path fill={`url(#b${id})`} d="M31 71.4L54 72.6L31 72.9Z" />
           </>
         )}
       </g>
