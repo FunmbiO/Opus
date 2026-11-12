@@ -1,4 +1,5 @@
 import { config } from "./config.js";
+import { cleanRecipients, encodeHeader } from "./mailsafe.js";
 import { buildPdf, getContract, getSettings, problems, type Contract } from "./contracts.js";
 import { get, logActivity, nowIso, run } from "./db.js";
 import { gmailClient } from "./gmail.js";
@@ -22,7 +23,6 @@ export class SendRefused extends Error {
 
 const b64 = (s: string) => Buffer.from(s, "utf8").toString("base64");
 const wrap = (s: string) => s.replace(/(.{76})/g, "$1\r\n");
-const encodeHeader = (s: string) => (/^[\x20-\x7e]*$/.test(s) ? s : `=?UTF-8?B?${b64(s)}?=`);
 const safeName = (s: string) => s.replace(/[^A-Za-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40) || "Client";
 
 function fillCover(c: Contract) {
@@ -77,6 +77,9 @@ export async function sendContract(a: Approval): Promise<{ messageId: string }> 
       }
     }
 
+    // The address comes from a form and from you; a line break in it would let someone add a hidden Bcc.
+    let to: string;
+    try { to = cleanRecipients(c.clientEmail); } catch (e) { throw new SendRefused(e instanceof Error ? e.message : "The client's email address is not valid."); }
     const boundary = `opus_${Date.now().toString(36)}`;
     const filename = `${safeName(getSettings().business.name)}-Agreement-${safeName(c.clientName)}.pdf`;
     // Send as your business address. Gmail only honours this if it is set up under
@@ -85,7 +88,7 @@ export async function sendContract(a: Approval): Promise<{ messageId: string }> 
     const from = /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(biz.email) ? [`From: ${encodeHeader(biz.name)} <${biz.email}>`, `Reply-To: ${biz.email}`] : [];
     const raw = [
       ...from,
-      `To: ${c.clientEmail.trim()}`,
+      `To: ${to}`,
       `Subject: ${encodeHeader(subject)}`,
       ...extra,
       "MIME-Version: 1.0",

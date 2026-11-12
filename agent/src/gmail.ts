@@ -1,4 +1,5 @@
 import { google, type gmail_v1 } from "googleapis";
+import { cleanHeader, cleanRecipients, encodeHeader, firstAddress, safeCopied } from "./mailsafe.js";
 import { config } from "./config.js";
 import { MAX_BYTES } from "./attachments.js";
 import { MockMailbox } from "./mock.js";
@@ -213,24 +214,26 @@ class GmailMailbox implements Mailbox {
       const target = lastFromOther ?? msgs[msgs.length - 1];
       // An explicit recipient wins. Website-form notifications come from your own address,
       // so replying to "the sender" would send the draft back to you instead of the client.
-      toAddr = to || (blankTo ? "" : header(target, "Reply-To") || header(target, "From"));
+      toAddr = to ? cleanRecipients(to) : (blankTo ? "" : firstAddress(header(target, "Reply-To") || header(target, "From")));
       const base = header(msgs[0], "Subject");
       subj = /^re:/i.test(base) ? base : `Re: ${base}`;
-      const msgId = header(msgs[msgs.length - 1], "Message-ID");
+      const msgId = safeCopied(header(msgs[msgs.length - 1], "Message-ID"));
       if (msgId) {
         extra.push(`In-Reply-To: ${msgId}`);
-        extra.push(`References: ${[header(msgs[msgs.length - 1], "References"), msgId].filter(Boolean).join(" ")}`);
+        extra.push(`References: ${[safeCopied(header(msgs[msgs.length - 1], "References")), msgId].filter(Boolean).join(" ")}`);
       }
     }
+    if (!threadId && toAddr) toAddr = cleanRecipients(toAddr);
     if ((!toAddr && !blankTo) || !subj) throw new Error("A new draft needs both a recipient and a subject.");
+    subj = cleanHeader(subj, "Subject", 300);
 
     // Draft as your business address. Gmail honours it when it is set up under "Send mail as".
     const biz = getSettings().business;
-    const from = /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(biz.email) ? [`From: ${biz.name} <${biz.email}>`] : [];
+    const from = /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(biz.email) ? [`From: ${encodeHeader(biz.name)} <${biz.email}>`] : [];
     const raw = [
       ...from,
       `To: ${toAddr}`,
-      `Subject: ${subj}`,
+      `Subject: ${encodeHeader(subj)}`,
       ...extra,
       "MIME-Version: 1.0",
       "Content-Type: text/plain; charset=UTF-8",

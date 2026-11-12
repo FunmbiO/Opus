@@ -78,7 +78,7 @@ const MIN = 60_000;
 export function classify(method: string, path: string): Route {
   if (!path.startsWith("/api/")) return { name: "static", limit: { max: 300, windowMs: MIN }, ai: false };
   if (method === "POST" && (path === "/api/auth/login" || path === "/api/auth/setup" || path === "/api/auth/password")) return { name: "auth", limit: { max: 12, windowMs: MIN }, ai: false };
-  if (method === "POST" && /^\/api\/contracts\/\d+\/send$/.test(path)) return { name: "send", limit: { max: 5, windowMs: MIN }, ai: false };
+  if (method === "POST" && /^\/api\/contracts\/\d+\/send$/.test(path)) return { name: "outbound", limit: { max: 5, windowMs: MIN }, ai: false };
   if (method === "POST" && path === "/api/attachments/unlock") return { name: "unlock", limit: { max: 10, windowMs: MIN }, ai: false };
   if (method === "POST" && path === "/api/files/upload") return { name: "upload", limit: { max: 10, windowMs: MIN }, ai: false };
   if (method === "POST" && path === "/api/inquiries/ingest") return { name: "ingest", limit: { max: 20, windowMs: MIN }, ai: true };
