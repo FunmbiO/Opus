@@ -1,0 +1,45 @@
+# Opus behind Tailscale. Start with:  docker compose up -d --build
+# No `ports:` here on purpose: the only way in is Tailscale. See docs/DEPLOY.md.
+name: opus
+
+services:
+  tailscale:
+    image: tailscale/tailscale:stable
+    hostname: ${TS_HOSTNAME:-opus}
+    environment:
+      TS_AUTHKEY: ${TS_AUTHKEY:?Put a Tailscale auth key in .env (see .env.example)}
+      TS_HOSTNAME: ${TS_HOSTNAME:-opus}
+      TS_STATE_DIR: /var/lib/tailscale
+      TS_SERVE_CONFIG: /config/serve.json
+    volumes:
+      - ts-state:/var/lib/tailscale
+      - ./deploy/tailscale-serve.json:/config/serve.json:ro
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - net_admin
+    restart: unless-stopped
+
+  opus:
+    build: .
+    # Share the tailscale container's network: Opus listens on 127.0.0.1 there.
+    network_mode: service:tailscale
+    depends_on:
+      - tailscale
+    env_file:
+      - agent/.env
+    volumes:
+      - data:/app/agent/data
+      - keys:/keys
+      - ./seed:/app/seed:ro
+      - ./agent/style.md:/app/agent/style.md:ro
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped
+
+volumes:
+  ts-state:
+  data:
+  keys:
