@@ -809,3 +809,5 @@ h2, h3 { font-family: var(--mono); font-weight: 600; letter-spacing: -.01em; }
 .kbtn { white-space: nowrap; font-size: .76rem; } .kbtn kbd { font-size: .62rem; padding: 0 4px; }
 .mode { white-space: nowrap; }
 @media (max-width: 880px) { .banner { font-size: .7rem; padding: 6px 10px; } .orbit-cap { font-size: .68rem; } }
+
+:root[data-theme="light"] .hero .eyebrow::before, :root[data-theme="light"] .stage .eyebrow::before { color: var(--accent); }
