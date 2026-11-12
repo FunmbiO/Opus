@@ -653,3 +653,12 @@ body { overscroll-behavior-y: none; }
 /* neutral verdict blocks need dark text in both themes */
 .vv-unclear, .vv-lapsed { --vt: #0A0A09; }
 .v-unclear, .v-lapsed { color: var(--ink-2); }
+
+/* ======== NitroDrp style ======== */
+/* ground: faint dot grid on near-black */
+body { background: radial-gradient(rgba(245,245,245,.09) 1px, transparent 1.5px) 0 0 / 22px 22px, var(--paper); background-attachment: fixed; }
+:root[data-theme="light"] body { background: radial-gradient(rgba(17,17,17,.10) 1px, transparent 1.5px) 0 0 / 22px 22px, var(--paper); background-attachment: fixed; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) body { background: radial-gradient(rgba(17,17,17,.10) 1px, transparent 1.5px) 0 0 / 22px 22px, var(--paper); background-attachment: fixed; } }
+.panel::before { display: none; }
+.sample, .badge, .pill, .chip, .btn, .search, .inp, .idea, .rowbtn, .alert, .panel, .lockcard, .toast, .banner, .palette, .drawer, kbd { border-radius: 4px; }
+.panel, .alert, .lockcard, .palette, .rowbtn { border-radius: 6px; }
