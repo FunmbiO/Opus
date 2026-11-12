@@ -1,6 +1,10 @@
 # Changelog
 
 ## Unreleased
+### Logo and colour
+- New car-inspired "O" mark replaces the diamond: nav, boot screen, orbit centre, favicon and all app icons.
+- Ember, teal, violet and copper accents added to the black and gold look; the orbit, charts and category colours use them.
+
 ### Secrets
 - `agent/scripts/reveal.ts` (`npm run reveal`) prints sealed `.env` secrets in plain text on the computer that sealed them, so they can be moved to a server. Only the secrets Opus keeps can be requested. Covered by `npm run test:reveal`.
 
