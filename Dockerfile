@@ -20,8 +20,9 @@ ENV NODE_ENV=production \
     OPUS_KEY_DIR=/keys
 WORKDIR /app/agent
 COPY agent/package.json agent/package-lock.json ./
-# tsx is a devDependency and is how the agent runs, so install everything.
-RUN npm ci
+# tsx is a devDependency and is how the agent runs. NODE_ENV=production makes npm skip
+# devDependencies, so ask for them explicitly.
+RUN npm ci --include=dev
 COPY agent/ ./
 COPY shared/ /app/shared/
 COPY seed/ /app/seed/
