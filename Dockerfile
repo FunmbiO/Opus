@@ -6,6 +6,8 @@ WORKDIR /app/dashboard
 COPY dashboard/package.json dashboard/package-lock.json ./
 RUN npm ci
 COPY dashboard/ ./
+# The dashboard imports ../../shared/*.json at build time, so it must exist at /app/shared.
+COPY shared/ /app/shared/
 RUN npm run build
 
 # ---- run the agent ----
