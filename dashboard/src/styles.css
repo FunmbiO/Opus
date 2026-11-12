@@ -608,3 +608,12 @@ body { background-image: radial-gradient(color-mix(in srgb, var(--ink) 9%, trans
 .hero h1 .soft, .stage h1 .soft, .stage h1 em { background: var(--mark); color: var(--on-mark); padding: 0 .14em; font-style: normal; font-weight: inherit; -webkit-text-fill-color: var(--on-mark); }
 .hero h1::after, .stage h1::after { content: ""; display: inline-block; width: .45em; height: .8em; margin-left: 8px; background: var(--mark); vertical-align: -.04em; animation: cursor 1.05s steps(1) infinite; }
 @keyframes cursor { 50% { opacity: 0; } }
+
+/* buttons: mono labels and hard offset shadows */
+.btn { font-family: var(--mono); font-weight: 700; font-size: .86rem; border-width: 2px; min-height: 40px; }
+.btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--lift); }
+.btn.primary { box-shadow: 4px 4px 0 var(--ink); border-color: var(--ink); }
+.btn.primary:hover:not(:disabled) { box-shadow: 6px 6px 0 var(--ink); }
+.btn.primary:active:not(:disabled) { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
+.btn.small { font-size: .78rem; min-height: 32px; }
+.textbtn, .link { font-family: var(--mono); font-weight: 700; font-size: .82rem; }
