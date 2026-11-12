@@ -1,0 +1,116 @@
+{
+  "generatedAt": "2026-10-05",
+  "scope": "Sample data. A read-only scan of Gmail receipts fills this in with your own subscriptions.",
+  "subscriptions": [
+    {
+      "id": "streaming-plus",
+      "name": "Streaming Plus",
+      "plan": "Monthly",
+      "billing": "direct",
+      "amount": 15.99,
+      "cycle": "monthly",
+      "monthlyEquivalent": 15.99,
+      "nextCharge": "2026-11-10",
+      "lastSeen": "2026-10-10",
+      "status": "active",
+      "verdict": "unclear",
+      "reason": "Overlaps with another streaming service. Decide which one you actually open."
+    },
+    {
+      "id": "cloud-storage",
+      "name": "Cloud Storage 2 TB",
+      "plan": "Monthly, billed through Apple",
+      "billing": "apple",
+      "amount": 12.99,
+      "cycle": "monthly",
+      "monthlyEquivalent": 12.99,
+      "nextCharge": "2026-11-25",
+      "lastSeen": "2026-10-25",
+      "status": "active",
+      "verdict": "keep",
+      "reason": "Holds your photos and backups."
+    },
+    {
+      "id": "ai-assistant",
+      "name": "AI Assistant Pro",
+      "plan": "Monthly",
+      "billing": "direct",
+      "amount": 24.99,
+      "cycle": "monthly",
+      "monthlyEquivalent": 24.99,
+      "nextCharge": "2026-11-17",
+      "lastSeen": "2026-10-17",
+      "status": "active",
+      "verdict": "keep",
+      "reason": "Used most days."
+    },
+    {
+      "id": "photo-editor",
+      "name": "Photo Editor Premium",
+      "plan": "Yearly",
+      "billing": "apple",
+      "amount": 59.99,
+      "cycle": "yearly",
+      "monthlyEquivalent": 5.0,
+      "nextCharge": "2027-07-08",
+      "lastSeen": "2026-07-08",
+      "status": "active",
+      "verdict": "keep",
+      "reason": "Renews once a year."
+    },
+    {
+      "id": "mockly",
+      "name": "Mockly Weekly",
+      "plan": "Weekly, 20% off",
+      "billing": "stripe",
+      "amount": 1.99,
+      "cycle": "weekly",
+      "monthlyEquivalent": 8.62,
+      "nextCharge": "2026-11-14",
+      "lastSeen": "2026-11-07",
+      "status": "active",
+      "verdict": "cancel",
+      "reason": "Several failed payments and no clear use."
+    },
+    {
+      "id": "design-tool",
+      "name": "Design Tool",
+      "plan": "Invoice on the 1st",
+      "billing": "direct",
+      "amount": null,
+      "cycle": "unknown",
+      "monthlyEquivalent": null,
+      "nextCharge": null,
+      "lastSeen": "2026-10-01",
+      "status": "active",
+      "verdict": "unclear",
+      "reason": "Receipt shows no price. Add it by hand."
+    }
+  ],
+  "approvals": [
+    {
+      "id": "ap-streaming",
+      "kind": "cancel",
+      "title": "Prepare cancellation: Streaming Plus",
+      "reason": "Renews soon for $15.99. Another service already covers streaming. Approving makes Opus write the steps.",
+      "subscriptionId": "streaming-plus",
+      "createdAt": "2026-10-05T12:00:00.000Z"
+    },
+    {
+      "id": "ap-mockly",
+      "kind": "cancel",
+      "title": "Prepare cancellation: Mockly Weekly",
+      "reason": "About $8.62 a month, repeated failed payments, no clear use.",
+      "subscriptionId": "mockly",
+      "createdAt": "2026-10-05T12:00:00.000Z"
+    }
+  ],
+  "alerts": [
+    {
+      "id": "pay-mockly",
+      "severity": "medium",
+      "title": "Mockly payments failed 5 times",
+      "detail": "Failed charges on several dates, while other weeks went through."
+    }
+  ]
+}

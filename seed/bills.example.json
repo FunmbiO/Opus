@@ -1,0 +1,5 @@
+[
+  { "id": "phone", "name": "Mobile phone", "amount": 60.0, "charged": "2026-08-20", "posted": "2026-08-21", "billing": "direct", "keep": true },
+  { "id": "streaming", "name": "Streaming service", "amount": 15.99, "charged": "2026-08-12", "posted": "2026-08-13", "billing": "direct" },
+  { "id": "apple-bill-5", "name": "Apple.com/Bill (billed on the 5th)", "amount": 12.99, "charged": "2026-09-05", "posted": "2026-09-06", "billing": "apple" }
+]

@@ -1,0 +1,14 @@
+node_modules/
+.env
+.env.*
+!.env.example
+*.db
+*.db-*
+data/
+dist/
+*.zip
+.DS_Store
+dist-preview/
+seed/*.json
+!seed/*.example.json
+agent/style.md

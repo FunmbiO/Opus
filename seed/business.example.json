@@ -1,0 +1,35 @@
+{
+  "business": {
+    "name": "Example Studio",
+    "email": "hello@example.com",
+    "phone": "(555) 555-0100",
+    "location": "Your City",
+    "signer": "Alex"
+  },
+  "taxLabel": "HST",
+  "taxRate": 0,
+  "depositPct": 30,
+  "packages": [
+    {
+      "id": "photo",
+      "name": "Wedding photography",
+      "price": 1000,
+      "description": "Full-day coverage, getting ready through reception."
+    },
+    {
+      "id": "video",
+      "name": "Wedding videography",
+      "price": 1200,
+      "description": "Full-day coverage, getting ready through reception."
+    },
+    {
+      "id": "combo",
+      "name": "Photography + videography",
+      "price": 1900,
+      "description": "Full-day photo and video coverage, getting ready through reception."
+    }
+  ],
+  "terms": "## 1. Services\n{{business}} (the \"Provider\") will provide the services listed above for {{client}} (the \"Client\") for the {{event_type}} on {{date}} at {{venue}}.\n\n## 2. Fees and payment\nThe total fee is {{total}}. A non-refundable retainer of {{deposit}} is due when this agreement is signed and reserves the date. The remaining balance of {{balance}} is due 14 days before the event. The date is not held until the signed agreement and the retainer have been received.\n\n## 3. Coverage\nCoverage is as described in the package above. Start and end times are agreed in writing before the event. Extra time is subject to the Provider's availability and an additional fee agreed in writing beforehand.\n\n## 4. Cancellation and rescheduling\nThe retainer is not refunded if the Client cancels. If the Client cancels fewer than 30 days before the event, the full fee is due. The Client may reschedule once, subject to the Provider's availability, and the retainer carries over to the new date.\n\n## 5. Delivery\nThe edited photos and video will be delivered through an online gallery or download link within [CONFIRM: delivery timeline]. The Provider keeps the raw files.\n\n## 6. Copyright and usage\nThe Provider keeps the copyright in all photos and video. The Client receives a personal, non-commercial licence to print, share and post them. The Provider may use selected work in its portfolio and marketing unless the Client asks in writing not to.\n\n## 7. If something goes wrong\nIf the Provider cannot attend because of illness, an emergency or circumstances beyond its control, it will make reasonable efforts to arrange a replacement of similar quality. If it cannot, its liability is limited to a refund of the amounts paid. The Provider is not responsible for events outside its control, including weather, venue restrictions, or guests who do not cooperate.\n\n## 8. Governing law\nThis agreement is governed by the laws of the Province of New Brunswick and the federal laws of Canada that apply there.\n\n## 9. Agreement\nThis is the entire agreement between the parties. Changes must be in writing and signed by both. By signing below, both parties agree to these terms.",
+  "coverSubject": "Your agreement with Example Studio",
+  "coverBody": "Hi {{first_name}},\n\nThanks again for chatting. As discussed, I've attached the agreement for your {{event_type}} on {{event_date}}.\n\nPlease read it through, sign it, and send it back to me along with the retainer to lock in the date. If anything needs to change, just tell me and I'll update it.\n\nLooking forward to being part of your day.\n\n{{sign_off}}"
+}

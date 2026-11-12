@@ -1,0 +1,44 @@
+{
+  "name": "aide-agent",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Opus: a personal assistant agent. Reads and sorts email, writes drafts for review, tracks subscriptions. It cannot send, delete, or cancel anything.",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "auth": "tsx --env-file=.env scripts/auth.ts",
+    "triage": "tsx --env-file-if-exists=.env src/cli.ts triage",
+    "subs": "tsx --env-file-if-exists=.env src/cli.ts subs",
+    "seed": "tsx --env-file-if-exists=.env src/cli.ts seed",
+    "serve": "tsx --env-file-if-exists=.env src/cli.ts serve",
+    "serve:mock": "tsx --env-file-if-exists=.env src/cli.ts serve --mock",
+    "seed:mock": "tsx --env-file-if-exists=.env src/cli.ts seed --mock",
+    "demo": "tsx --env-file-if-exists=.env src/cli.ts demo",
+    "typecheck": "tsc --noEmit",
+    "safety": "node scripts/safety-check.mjs",
+    "check": "npm run typecheck && npm run safety",
+    "readtest": "tsx scripts/readtest.ts",
+    "password": "tsx --env-file-if-exists=.env scripts/password.ts",
+    "protect": "tsx --env-file-if-exists=.env scripts/protect.ts",
+    "restore": "tsx --env-file-if-exists=.env scripts/restore.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.131.0",
+    "@napi-rs/canvas": "^1.0.10",
+    "docx": "^9.8.1",
+    "exceljs": "^4.4.0",
+    "googleapis": "^183.0.0",
+    "mammoth": "^1.13.0",
+    "pdfkit": "^0.20.2",
+    "read-excel-file": "^9.3.10",
+    "unpdf": "^1.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "@types/pdfkit": "^0.17.6",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}
