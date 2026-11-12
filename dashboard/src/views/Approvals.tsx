@@ -93,14 +93,19 @@ export function Approvals({ s, decide, undo, busy }: Props) {
           <h3 className="sect">Decided</h3>
           <div className="rows">
             {done.map((a) => (
-              <button className="aq-done" key={a.id} onClick={() => setOpenId(a.id)}>
-                <span className={`pill ${a.status === "approved" ? "v-keep" : "v-unclear"}`}>{a.status === "approved" ? "Prepared" : "Not now"}</span>
-                <span className="aq-done-main">
-                  <strong>{a.title}</strong>
-                  <small>{a.status === "dismissed" ? "You said not now." : a.result ?? "Prepared."}</small>
-                </span>
-                <span className="when">{ago(a.createdAt, s.now)}</span>
-              </button>
+              <div className="aq-done" key={a.id}>
+                <button className="aq-done-open" onClick={() => setOpenId(a.id)}>
+                  <span className={`pill ${a.status === "approved" ? "v-keep" : "v-unclear"}`}>{a.status === "approved" ? "Prepared" : "Not now"}</span>
+                  <span className="aq-done-main">
+                    <strong>{a.title}</strong>
+                    <small>{a.status === "dismissed" ? "You said not now." : a.result ?? "Prepared."}</small>
+                  </span>
+                  <span className="when">{ago(a.createdAt, s.now)}</span>
+                </button>
+                {a.status === "dismissed" && (
+                  <button className="btn small aq-undo" disabled={busy === a.id} onClick={() => undo(a.id)} title="Put this back in the queue">Undo</button>
+                )}
+              </div>
             ))}
           </div>
         </>

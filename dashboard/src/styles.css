@@ -708,8 +708,10 @@ body { background-image: radial-gradient(color-mix(in srgb, var(--ink) 9%, trans
 .aq-tier ul { margin: 0; padding-left: 18px; font-size: .84rem; color: var(--ink-2); display: flex; flex-direction: column; gap: 4px; }
 .aq-tier-note { margin: 0; font: 400 .74rem var(--mono); color: var(--ink-3); }
 @media (max-width: 880px) { .aq-tier-grid { grid-template-columns: 1fr; } }
-.aq-done { display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; background: none; border: 0; border-top: 1px solid var(--hair); padding: 14px 4px; }
+.aq-done { display: flex; align-items: center; gap: 12px; border-top: 1px solid var(--hair); padding: 8px 4px; }
 .aq-done:last-child { border-bottom: 1px solid var(--hair); } .aq-done:hover { background: var(--paper-2); }
+.aq-done-open { flex: 1; min-width: 0; display: flex; align-items: center; gap: 14px; text-align: left; background: none; border: 0; padding: 6px 0; }
+.aq-undo { flex: none; }
 .aq-done-main { flex: 1; min-width: 0; display: flex; flex-direction: column; } .aq-done-main small { color: var(--ink-3); }
 .aq-empty { border: 2px dashed var(--ink-3); border-radius: 12px; padding: 28px 24px; display: flex; flex-direction: column; gap: 6px; } .aq-empty p { margin: 0; color: var(--ink-2); }
 .aq-prompt { font: 400 .875rem var(--mono); color: var(--gold-ink) !important; }
