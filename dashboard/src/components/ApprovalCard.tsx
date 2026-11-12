@@ -32,6 +32,10 @@ export function ApprovalCard({ a, s, busy, selected, onApprove, onDismiss, onOpe
       <h3 className="aq-title">{a.title}</h3>
       <p className="aq-reason">{a.reason}</p>
       {sub && <Facts sub={sub} now={s.now} />}
+      <div className="aq-outcome">
+        <Icon name="shield" size={16} />
+        <p><b>If you approve:</b> {meta.outcome}</p>
+      </div>
       <div className="sub-actions">
         <button className="btn primary small" disabled={busy} onClick={onApprove}>{busy ? "Working…" : meta.verb}</button>
         <button className="btn small" disabled={busy} onClick={onDismiss}>Not now</button>

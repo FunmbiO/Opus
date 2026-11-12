@@ -688,3 +688,5 @@ body { background-image: radial-gradient(color-mix(in srgb, var(--ink) 9%, trans
 .aq-facts dt { font: 400 .72rem var(--mono); color: var(--ink-3); text-transform: uppercase; letter-spacing: .05em; }
 .aq-facts dd { margin: 0; font-weight: 700; } .aq-facts small { color: var(--ink-3); font-weight: 500; }
 @media (max-width: 880px) { .aq-facts { grid-template-columns: 1fr 1fr; gap: 14px 20px; } }
+.aq-outcome { display: flex; gap: 10px; align-items: flex-start; background: var(--paper); border-left: 4px solid var(--green); padding: 10px 14px; font-size: .86rem; color: var(--ink-2); }
+.aq-outcome svg { flex: none; color: var(--green); margin-top: 2px; } .aq-outcome p { margin: 0; } .aq-outcome b { color: var(--ink); font-family: var(--mono); font-size: .78rem; }
