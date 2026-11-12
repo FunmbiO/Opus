@@ -15,6 +15,7 @@ import type { MoneyActions } from "./views/Spending";
 import { Palette, type Command } from "./components/Palette";
 import { DraftDrawer } from "./components/Drawer";
 import { OMark } from "./components/OMark";
+import { InstallTip } from "./components/InstallTip";
 import { Boot } from "./components/Boot";
 import { calcTotals, money } from "./format";
 
@@ -34,6 +35,9 @@ const TABS: { id: Tab; label: string; icon: string }[] = [
   { id: "activity", label: "Activity", icon: "activity" },
 ];
 
+/** Seven tabs do not fit under a thumb, so the phone bar shows four and tucks the rest under "More". */
+const PRIMARY: Tab[] = ["today", "ask", "clients", "approvals"];
+
 export default function App() {
   const [s, setS] = useState<State | null>(null);
   const [needAuth, setNeedAuth] = useState(false);
@@ -43,6 +47,7 @@ export default function App() {
   const [toast, setToast] = useState("");
   const [theme, setTheme] = useState<Theme>(readTheme);
   const [palette, setPalette] = useState(false);
+  const [more, setMore] = useState(false);
   const [draft, setDraft] = useState<Draft | null>(null);
   const [query, setQuery] = useState("");
   const [seed, setSeed] = useState("");
@@ -92,6 +97,14 @@ export default function App() {
     refresh();
     const t = setInterval(refresh, 30_000);
     return () => clearInterval(t);
+  }, [refresh]);
+
+  // iPhones freeze a home-screen app's timers while it is in the background, so catch up the moment it is opened again.
+  useEffect(() => {
+    const back = () => { if (document.visibilityState === "visible") void refresh(); };
+    document.addEventListener("visibilitychange", back);
+    window.addEventListener("pageshow", back);
+    return () => { document.removeEventListener("visibilitychange", back); window.removeEventListener("pageshow", back); };
   }, [refresh]);
 
   const say = (m: string) => { setToast(m); setTimeout(() => setToast(""), 3200); };
@@ -291,8 +304,9 @@ export default function App() {
       <main>
         <div className="topbar">
           <div className="brand"><OMark bold size={30} />Opus</div>
-          <div><button className="icon-btn" onClick={() => setPalette(true)} aria-label="Search"><Icon name="search" /></button><button className="icon-btn" onClick={cycleTheme} aria-label="Change theme"><Icon name={theme === "light" ? "sun" : "moon"} /></button></div>
+          <div><button className="icon-btn" onClick={() => { void refresh(); say("Refreshed"); }} aria-label="Refresh"><Icon name="refresh" /></button><button className="icon-btn" onClick={() => setPalette(true)} aria-label="Search"><Icon name="search" /></button><button className="icon-btn" onClick={cycleTheme} aria-label="Change theme"><Icon name={theme === "light" ? "sun" : "moon"} /></button></div>
         </div>
+        <InstallTip />
         {s.mode === "live" && !s.security.passwordSet && (
           <div className="banner warn">
             <span>Opus has no password yet, so anyone who can reach this page can use it.</span>
@@ -311,16 +325,37 @@ export default function App() {
         {tab === "activity" && <Activity s={s} onState={setS} onSignedOut={refresh} />}
       </main>
 
-      <nav className="tabbar">
-        {TABS.map((t) => (
-          <button key={t.id} className={tab === t.id ? "on" : ""} onClick={() => setTab(t.id)}>
-            <Icon name={t.icon} size={22} />
+      <nav className="tabbar" aria-label="Main">
+        {TABS.filter((t) => PRIMARY.includes(t.id)).map((t) => (
+          <button key={t.id} className={tab === t.id ? "on" : ""} onClick={() => { setTab(t.id); setMore(false); }}>
+            <Icon name={t.icon} size={24} />
             <span>{t.label}</span>
             {t.id === "approvals" && pending > 0 && <b className="badge">{pending}</b>}
             {t.id === "clients" && openClients > 0 && <b className="badge">{openClients}</b>}
           </button>
         ))}
+        <button className={!PRIMARY.includes(tab) || more ? "on" : ""} onClick={() => setMore((m) => !m)} aria-expanded={more} aria-haspopup="menu">
+          <Icon name="plus" size={24} />
+          <span>More</span>
+        </button>
       </nav>
+
+      {more && (
+        <div className="sheet-scrim" onClick={() => setMore(false)}>
+          <div className="sheet" role="menu" aria-label="More" onClick={(e) => e.stopPropagation()}>
+            {TABS.filter((t) => !PRIMARY.includes(t.id)).map((t) => (
+              <button key={t.id} role="menuitem" className={tab === t.id ? "sheet-item on" : "sheet-item"} onClick={() => { setTab(t.id); setMore(false); }}>
+                <Icon name={t.icon} size={22} /><span>{t.label}</span>
+              </button>
+            ))}
+            <div className="sheet-sep" />
+            <button role="menuitem" className="sheet-item" onClick={() => { setMore(false); setPalette(true); }}><Icon name="search" size={22} /><span>Search or jump</span></button>
+            <button role="menuitem" className="sheet-item" onClick={() => { void refresh(); setMore(false); }}><Icon name="refresh" size={22} /><span>Refresh</span></button>
+            <button role="menuitem" className="sheet-item" onClick={cycleTheme}><Icon name={theme === "light" ? "sun" : "moon"} size={22} /><span>Theme: {theme}</span></button>
+            <div className={`sheet-mode ${s.mode}`}><i />{s.mode === "live" ? "Connected to your agent" : "Preview with sample data"}</div>
+          </div>
+        </div>
+      )}
 
       {palette && <Palette commands={commands} onClose={() => setPalette(false)} onAsk={askOpus} />}
       {draft && <DraftDrawer draft={draft} now={s.now} onClose={() => setDraft(null)} onDismiss={() => { const id = draft.id; setDraft(null); run(`d${id}`, `drafts/${id}/dismiss`, (p) => ({ ...p, drafts: p.drafts.filter((x) => x.id !== id) }), "Removed from the list"); }} />}

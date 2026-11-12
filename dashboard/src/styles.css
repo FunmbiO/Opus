@@ -767,3 +767,60 @@ body { background-image: radial-gradient(620px 320px at 92% -6%, color-mix(in sr
 .aq-stat:nth-child(2) b { color: var(--teal); } .aq-stat:nth-child(3) b { color: var(--violet); }
 .aq-tier.t-ask { border-top-color: var(--ember); } .aq-tier.t-ask svg { color: var(--ember); } .aq-tier.t-auto { border-top-color: var(--teal); } .aq-tier.t-auto svg { color: var(--teal); }
 .aq-undobar { border-color: var(--ember); }
+
+/* ======== iPhone and small screens ======== */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; background: var(--paper); }
+body { -webkit-tap-highlight-color: transparent; overscroll-behavior-y: none; }
+button, a, .chip, .btn, .icon-btn, .nav-item, .rowbtn { touch-action: manipulation; -webkit-touch-callout: none; }
+.btn, .chip, .nav-item, .tabbar button, .icon-btn, .sheet-item { -webkit-user-select: none; user-select: none; }
+.shell { min-height: 100vh; min-height: 100dvh; }
+.boot { min-height: 100vh; min-height: 100dvh; }
+
+.sheet-scrim, .sheet { display: none; }
+.install-tip { display: none; }
+
+@media (max-width: 880px) {
+  :root { --tabbar-h: calc(64px + env(safe-area-inset-bottom)); }
+  /* iOS zooms the page when an input is smaller than 16px, so never go below it */
+  input, textarea, select { font-size: max(16px, 1em); }
+  /* thumb-sized targets */
+  .btn, .btn.small { min-height: 44px; }
+  .chip { min-height: 44px; display: inline-flex; align-items: center; }
+  .icon-btn { min-width: 44px; height: 44px; display: inline-grid; place-items: center; }
+  .textbtn, .link { min-height: 44px; display: inline-flex; align-items: center; }
+  .check { min-height: 44px; }
+  .idea, .rowbtn { min-height: 56px; }
+
+  /* respect the notch and the home indicator */
+  main { padding-top: max(16px, calc(env(safe-area-inset-top) + 8px)); padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); padding-bottom: calc(var(--tabbar-h) + 24px); }
+  .tabbar { height: var(--tabbar-h); padding-bottom: env(safe-area-inset-bottom); background: var(--nav-bg); }
+  .tabbar button { min-height: 56px; font-size: .7rem; letter-spacing: 0; }
+  .tabbar .badge { right: 22%; }
+  .toast { bottom: calc(var(--tabbar-h) + 14px); max-width: calc(100vw - 32px); }
+  .composer { bottom: var(--tabbar-h); padding-bottom: 12px; }
+
+  /* the More sheet sits above the tab bar */
+  .sheet-scrim { display: flex; position: fixed; left: 0; right: 0; top: 0; bottom: var(--tabbar-h); z-index: 25; background: rgba(0,0,0,.5); align-items: flex-end; animation: fade .12s ease both; }
+  .sheet { display: flex; flex-direction: column; width: 100%; background: var(--paper-2); border-top: 2px solid var(--line); border-radius: 14px 14px 0 0; padding: 8px 8px 10px; max-height: 70vh; overflow-y: auto; animation: sheet-up .2s cubic-bezier(.2,.8,.2,1) both; }
+  .sheet-item { display: flex; align-items: center; gap: 14px; min-height: 52px; padding: 0 14px; border: 0; background: none; color: var(--ink); font: 700 .95rem var(--mono); text-align: left; border-radius: 6px; }
+  .sheet-item.on { background: var(--paper); color: var(--ember); } .sheet-item:active { background: var(--paper); }
+  .sheet-item svg { color: var(--ink-2); } .sheet-item.on svg { color: var(--ember); }
+  .sheet-sep { height: 1px; background: var(--hair); margin: 6px 8px; }
+  .sheet-mode { display: flex; align-items: center; gap: 8px; padding: 10px 14px 4px; font: 400 .72rem var(--mono); color: var(--ink-3); }
+  .sheet-mode i { width: 8px; height: 8px; background: var(--ink-3); } .sheet-mode.live i { background: var(--green); }
+
+  .install-tip { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; border: 2px solid var(--ember); background: var(--paper-2); border-radius: 6px; padding: 12px 14px; margin-bottom: 16px; box-shadow: 4px 4px 0 var(--lift); }
+  .install-tip p { margin: 4px 0 0; font-size: .88rem; color: var(--ink-2); } .install-tip b { font-family: var(--mono); font-size: .85rem; }
+  .install-tip .share { display: inline-block; vertical-align: -4px; color: var(--ember); }
+}
+@keyframes sheet-up { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+/* landscape phones: keep content clear of the notch */
+@media (max-width: 880px) and (orientation: landscape) { main { padding-left: max(20px, env(safe-area-inset-left)); padding-right: max(20px, env(safe-area-inset-right)); } }
+@media (max-width: 880px) {
+  /* same specificity as the desktop rules above, and later, so these win */
+  input, textarea, select, .composer textarea, .search input, .inp, .auth input, .pal-input input { font-size: max(16px, 1rem); }
+  .search input { min-height: 44px; }
+  /* small inline tags keep their look, but get a 44px touch area around them */
+  .txcat { position: relative; }
+  .txcat::after { content: ""; position: absolute; inset: -8px -4px; }
+}
