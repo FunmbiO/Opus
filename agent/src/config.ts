@@ -36,6 +36,8 @@ export const config = {
     host: process.env.HOST ?? "127.0.0.1",
     port: num("PORT", 8787),
     token: secret("API_TOKEN"),
+    // Extra host names the server answers to (comma separated). localhost, IP addresses and *.ts.net always work.
+    allowedHosts: (process.env.ALLOWED_HOSTS ?? "").split(",").map((h) => h.trim()).filter(Boolean),
   },
 
   telegram: {

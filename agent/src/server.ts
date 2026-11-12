@@ -1,6 +1,6 @@
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import { existsSync, readFileSync, statSync } from "node:fs";
-import { extname, join, normalize } from "node:path";
+import { extname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { config } from "./config.js";
 import { get, logActivity, nowIso, run } from "./db.js";
@@ -19,6 +19,7 @@ import { backupNow } from "./backups.js";
 import { createHash, timingSafeEqual } from "node:crypto";
 import { AuthError, changePassword, createSession, endOtherSessions, endSession, passwordSet, sessionValid, setPassword, verifyPassword } from "./auth.js";
 import { notify } from "./notify.js";
+import { Gate, RateLimiter, classify, clientIp, hostAllowed, isDirectLocal, publicMessage, safeJoin, setSecurityHeaders } from "./security.js";
 import { cleanName, deleteFile, extOf, MAX_UPLOAD_BYTES, mimeOf, readFile, saveFile, UPLOAD_TYPES } from "./files.js";
 
 const DIST = fileURLToPath(new URL("../../dashboard/dist", import.meta.url));
@@ -89,15 +90,31 @@ function noteMiss(ip: string) {
   if (misses.size > 500) misses.clear();
 }
 
+const METHODS = new Set(["GET", "HEAD", "POST", "PUT", "DELETE"]);
+
 export function startServer(deps: Deps) {
+  const limiter = new RateLimiter();
+  const aiGate = new Gate(2); // at most two calls to the model at once
   const server = createServer(async (req, res) => {
-    const url = new URL(req.url ?? "/", "http://localhost");
+    setSecurityHeaders(res, req);
+    // Cheap checks first, before any parsing. A malformed URL must never be able to throw out of this handler.
+    if (!METHODS.has(req.method ?? "")) { res.setHeader("allow", [...METHODS].join(", ")); return json(res, 405, { error: "Method not allowed." }); }
+    if ((req.url ?? "").length > 2048) return json(res, 414, { error: "That address is too long." });
+    if (!hostAllowed(req.headers.host, config.server.allowedHosts)) return json(res, 421, { error: "Unknown host." });
+    let url: URL;
+    try { url = new URL(req.url ?? "/", "http://localhost"); } catch { return json(res, 400, { error: "Bad request." }); }
     const path = url.pathname;
-    // Basic browser protections on every response.
-    res.setHeader("x-content-type-options", "nosniff");
-    res.setHeader("x-frame-options", "DENY");
-    res.setHeader("referrer-policy", "no-referrer");
-    const ip = req.socket.remoteAddress ?? "?";
+    const ip = clientIp(req);
+
+    // Each kind of request has its own budget per caller. Costly ones (the model, sending, uploads) have small ones.
+    const route = classify(req.method ?? "GET", path);
+    const wait = limiter.take(`${route.name}:${ip}`, route.limit);
+    if (wait) { res.setHeader("retry-after", String(wait)); return json(res, 429, { error: `Too many requests. Try again in ${wait} seconds.` }); }
+    if (route.ai) {
+      const release = aiGate.enter();
+      if (!release) { res.setHeader("retry-after", "5"); return json(res, 429, { error: "Opus is already busy with other requests. Try again in a moment." }); }
+      res.once("close", release);
+    }
 
     try {
       if (path.startsWith("/api/")) {
@@ -116,7 +133,7 @@ export function startServer(deps: Deps) {
           let b: Record<string, unknown>;
           try { b = await readJson(req, 2000); } catch { return json(res, 400, { error: "Bad request." }); }
           if (passwordSet()) return json(res, 409, { error: "A password is already set." });
-          const local = /^(::ffff:)?127\.0\.0\.1$|^::1$/.test(ip);
+          const local = isDirectLocal(req);
           const ok = config.server.token ? sameSecret(String(b.token ?? ""), config.server.token) : local;
           if (!ok) { noteMiss(ip); return json(res, 401, { error: config.server.token ? "That access token is wrong." : "Set the first password from the PC Opus runs on, or run npm run password." }); }
           try { setPassword(String(b.password ?? "")); } catch (e) { if (e instanceof AuthError) return json(res, 400, { error: e.message }); throw e; }
@@ -367,9 +384,12 @@ export function startServer(deps: Deps) {
 
       // Dashboard files, with single-page-app fallback.
       if (existsSync(DIST)) {
-        const safe = normalize(path).replace(/^(\.\.[/\\])+/, "");
-        let file = join(DIST, safe);
-        if (!file.startsWith(DIST) || !existsSync(file) || statSync(file).isDirectory()) file = join(DIST, "index.html");
+        let file = safeJoin(DIST, path === "/" ? "/index.html" : path);
+        const found = !!file && existsSync(file) && !statSync(file).isDirectory();
+        // A missing file with an extension is a real 404; anything else is a page the app routes itself.
+        if (!found && extname(path)) { res.writeHead(404, { "content-type": "text/plain" }); return res.end("Not found"); }
+        if (!found) file = join(DIST, "index.html");
+        file = file as string;
         // The service worker and manifest must never be served stale, or updates will not reach the phone.
         const fresh = /(^|[/\\])(sw\.js|manifest\.webmanifest|index\.html)$/.test(file) || extname(file) === ".html";
         res.writeHead(200, { "content-type": MIME[extname(file)] ?? "application/octet-stream", ...(fresh ? { "cache-control": "no-cache" } : {}) });
@@ -381,9 +401,15 @@ export function startServer(deps: Deps) {
       console.error(err);
       if (err instanceof Bad) return json(res, 400, { error: err.message });
       if (reportIfAuthError(err)) return json(res, 502, { error: "Your Google login expired. Run npm run auth, update .env, and restart Opus." });
-      json(res, 500, { error: err instanceof Error ? err.message : "Something went wrong." });
+      json(res, 500, { error: publicMessage(err) });
     }
   });
+
+  // Slow-connection attacks: do not let one client hold a socket open forever.
+  server.headersTimeout = 15_000;
+  server.requestTimeout = 300_000; // room for a 15 MB upload on a slow phone connection
+  server.keepAliveTimeout = 5_000;
+  server.maxHeadersCount = 64;
 
   server.listen(config.server.port, config.server.host, () => {
     console.log(`Opus is running at http://${config.server.host}:${config.server.port}`);
