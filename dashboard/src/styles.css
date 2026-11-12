@@ -629,3 +629,12 @@ body { background-image: radial-gradient(color-mix(in srgb, var(--ink) 9%, trans
 .hero, .stage { border-bottom-width: 1px; border-bottom-color: var(--hair); }
 .palette { box-shadow: 8px 8px 0 var(--gold); }
 .drawer { box-shadow: -6px 0 0 var(--lift); }
+
+/* nav and tab bar: mono labels, gold marker */
+.nav-item { font-family: var(--mono); font-weight: 700; font-size: .86rem; }
+.nav-item.on { border-left-color: var(--mark); color: var(--nav-ink); }
+.nav-item.on svg { color: var(--mark); }
+.brand { font-family: var(--mono); letter-spacing: -.03em; font-weight: 700; }
+.mode, .ss-row, .kbtn { font-family: var(--mono); } .kbtn { white-space: nowrap; font-size: .76rem; } .mode { white-space: nowrap; font-size: .72rem; }
+.tabbar button.on { color: var(--nav-ink); }
+.tabbar button.on svg { color: var(--mark); }
