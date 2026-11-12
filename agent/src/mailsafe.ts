@@ -6,7 +6,7 @@
 
 export class HeaderError extends Error {}
 
-const BREAKS = /[\r\n\0  ]/;
+const BREAKS = /[\r\n\0\u2028\u2029]/;
 
 /** A header value with no line breaks, trimmed and length-limited. Throws instead of quietly changing it. */
 export function cleanHeader(value: string, field: string, max = 900): string {
