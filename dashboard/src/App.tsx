@@ -174,6 +174,13 @@ export default function App() {
       approvals: p.approvals.map((a) => a.id === id ? { ...a, status: action === "approve" ? "approved" : "dismissed", result: action === "approve" ? "Prepared. (Demo)" : null } : a),
     }), action === "approve" ? "Preparing it now" : "Dismissed");
 
+  /** Put a "not now" back in the queue. Uses exec() so a refusal (already queued) shows the agent's own message. */
+  const undo = (id: string) =>
+    exec(id, () => act(`approvals/${id}/undo`), (p) => ({
+      ...p,
+      approvals: p.approvals.map((a) => a.id === id && a.status === "dismissed" ? { ...a, status: "pending", result: null } : a),
+    }), "Put back in the queue");
+
   const keep = (id: string) =>
     run(id, `subscriptions/${id}/keep`, (p) => ({ ...p, subscriptions: p.subscriptions.map((x) => x.id === id ? { ...x, verdict: "keep", userDecided: true } : x) }), "Marked as keep");
 
@@ -299,7 +306,7 @@ export default function App() {
         {tab === "ask" && <Ask s={s} onState={setS} seed={seed} clearSeed={() => setSeed("")} />}
         {tab === "budget" && <Budget s={s} a={budgetActions} m={moneyActions} start={s.money.accounts.length > 0 || s.money.configured ? "spending" : "plan"} />}
         {tab === "subs" && <Subscriptions s={s} keep={keep} prepare={prepare} query={query} setQuery={setQuery} />}
-        {tab === "approvals" && <Approvals s={s} decide={decide} busy={busy} />}
+        {tab === "approvals" && <Approvals s={s} decide={decide} undo={undo} busy={busy} />}
         {tab === "activity" && <Activity s={s} onState={setS} onSignedOut={refresh} />}
       </main>
 

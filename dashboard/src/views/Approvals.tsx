@@ -8,9 +8,9 @@ import { SafetyTiers } from "../components/SafetyTiers";
 import { ApprovalSummary } from "../components/ApprovalSummary";
 import { decidedOf, filterApprovals, pendingOf, sortApprovals, type KindFilter, type SortKey } from "../approvals";
 
-interface Props { s: State; decide: (id: string, action: "approve" | "dismiss") => void; busy: string | null }
+interface Props { s: State; decide: (id: string, action: "approve" | "dismiss") => void; undo: (id: string) => unknown; busy: string | null }
 
-export function Approvals({ s, decide, busy }: Props) {
+export function Approvals({ s, decide, undo, busy }: Props) {
   const [filter, setFilter] = useState<KindFilter>("all");
   const [sort, setSort] = useState<SortKey>("newest");
   const [openId, setOpenId] = useState<string | null>(null);
