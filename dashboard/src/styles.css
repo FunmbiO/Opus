@@ -727,3 +727,43 @@ body { background-image: radial-gradient(color-mix(in srgb, var(--ink) 9%, trans
 .boot-o .omark-lines { --mark-knock: #0a0a0a; transform-box: fill-box; transform-origin: left center; animation: o-lines .9s .45s cubic-bezier(.2,.8,.2,1) both; }
 @keyframes o-in { from { opacity: 0; transform: scale(.86); } to { opacity: 1; transform: none; } }
 @keyframes o-lines { from { opacity: 0; transform: translateX(-35%) scaleX(.6); } to { opacity: 1; transform: none; } }
+
+/* ======== More spice: accent colours on the same black and gold ======== */
+:root {
+  --ember: #d9531e; --copper: #b8692f; --teal: #0e8f80; --violet: #5b4bd1;
+  --c-jaded: #d9531e; --c-school: #0e8f80; --c-bills: #b4904e; --c-personal: #5b4bd1; --c-junk: #b9b8ae;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --ember: #ff7a45; --copper: #c0703a; --teal: #38c9b8; --violet: #8b7cf6; --c-jaded: #ff7a45; --c-school: #38c9b8; --c-bills: #d2b072; --c-personal: #8b7cf6; --c-junk: #3a3a35; }
+}
+:root[data-theme="dark"] { --ember: #ff7a45; --copper: #c0703a; --teal: #38c9b8; --violet: #8b7cf6; --c-jaded: #ff7a45; --c-school: #38c9b8; --c-bills: #d2b072; --c-personal: #8b7cf6; --c-junk: #3a3a35; }
+
+/* faint ambient colour at the top corners of the page */
+body { background-image: radial-gradient(620px 320px at 92% -6%, color-mix(in srgb, var(--ember) 11%, transparent), transparent 70%), radial-gradient(560px 300px at 4% -8%, color-mix(in srgb, var(--gold) 9%, transparent), transparent 70%), radial-gradient(color-mix(in srgb, var(--ink) 9%, transparent) 1px, transparent 1.5px); background-size: auto, auto, 22px 22px; background-attachment: fixed; }
+:root[data-theme="dark"] body { background: radial-gradient(620px 320px at 92% -6%, rgba(255,122,69,.11), transparent 70%), radial-gradient(560px 300px at 4% -8%, rgba(210,176,114,.09), transparent 70%), radial-gradient(rgba(245,245,240,.09) 1px, transparent 1.5px) 0 0 / 22px 22px, var(--paper); background-attachment: fixed; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) body { background: radial-gradient(620px 320px at 92% -6%, rgba(255,122,69,.11), transparent 70%), radial-gradient(560px 300px at 4% -8%, rgba(210,176,114,.09), transparent 70%), radial-gradient(rgba(245,245,240,.09) 1px, transparent 1.5px) 0 0 / 22px 22px, var(--paper); background-attachment: fixed; } }
+
+/* gold that warms to copper */
+.btn.primary { background: linear-gradient(135deg, color-mix(in srgb, var(--gold) 82%, #fff), var(--gold) 52%, var(--copper)); }
+.hero h1 .soft, .stage h1 .soft, .stage h1 em { background: linear-gradient(100deg, var(--mark), color-mix(in srgb, var(--mark) 60%, var(--ember))); }
+.hero h1::after, .stage h1::after { background: var(--ember); }
+.hero .eyebrow::before, .stage .eyebrow::before { color: var(--ember); }
+.nav-item.on { border-left-image: none; border-left-color: var(--ember); }
+.nav-item.on svg { color: var(--ember); }
+.badge { background: linear-gradient(135deg, var(--gold), var(--ember)); color: #0a0a0a; }
+.tabbar button.on svg { color: var(--ember); }
+.tabbar { border-top-color: var(--ember); }
+
+/* warnings are ember, good news is teal-green, the rest stays gold */
+.alert.sev-medium { border-color: var(--ember); } .alert.sev-medium > svg { color: var(--ember); }
+.lvl-nearing .ruler-fill, .lvl-target .ruler-fill, .lvl-warn .ruler-fill { background: linear-gradient(90deg, var(--gold), var(--ember)); }
+.ruler-fill { background: linear-gradient(90deg, color-mix(in srgb, var(--gold) 80%, #000), var(--gold) 60%, var(--copper)); }
+.v-review, .st-contract, .aq-kind { background: linear-gradient(135deg, var(--mark), var(--copper)); color: #0a0a0a; border-color: #0a0a0a; }
+.toast { border-left-color: var(--ember); }
+.ss-bar i, .catbar i { background: linear-gradient(90deg, var(--gold), var(--ember)); }
+
+/* stat tiles on the approval page, one colour each */
+.aq-stat.hot { border-color: var(--ember); } .aq-stat.hot b { color: var(--ember); }
+.aq-stat:nth-child(2) b { color: var(--teal); } .aq-stat:nth-child(3) b { color: var(--violet); }
+.aq-tier.t-ask { border-top-color: var(--ember); } .aq-tier.t-ask svg { color: var(--ember); } .aq-tier.t-auto { border-top-color: var(--teal); } .aq-tier.t-auto svg { color: var(--teal); }
+.aq-undobar { border-color: var(--ember); }
