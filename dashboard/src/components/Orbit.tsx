@@ -1,3 +1,4 @@
+import { LINES_FULL, RING_FULL } from "./omarkPaths";
 import { useEffect, useRef } from "react";
 import type { Category } from "../types";
 import { CAT } from "../format";
@@ -123,11 +124,23 @@ export function Orbit({ counts, busy }: { counts: Record<Category, number>; busy
       const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, 120 * pulse);
       g.addColorStop(0, "rgba(210,176,114,.7)"); g.addColorStop(1, "rgba(210,176,114,0)");
       ctx.globalAlpha = 1; ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, 120 * pulse, 0, Math.PI * 2); ctx.fill();
-      ctx.save(); ctx.translate(cx + mouse.x * 2, cy + mouse.y * 2); ctx.rotate(spin * 0.25);
-      const cg = ctx.createLinearGradient(-16, -16, 16, 16);
-      cg.addColorStop(0, "#f3e4b9"); cg.addColorStop(0.5, "#c9a45c"); cg.addColorStop(1, "#8a6a2f");
-      ctx.fillStyle = cg; ctx.shadowColor = "rgba(210,176,114,.7)"; ctx.shadowBlur = 18;
-      ctx.beginPath(); ctx.rect(-13 * pulse, -13 * pulse, 26 * pulse, 26 * pulse); ctx.fill(); ctx.restore();
+      // the O sits at the centre; it breathes and leans slightly toward the pointer, it does not spin
+      ctx.save(); ctx.translate(cx + mouse.x * 2, cy + mouse.y * 2); ctx.rotate(mouse.x * 0.004);
+      const k = (84 * pulse) / 100;
+      ctx.scale(k, k); ctx.translate(-50, -50);
+      // gradients live in the current (scaled) space, so define this one in the 0..100 box
+      const ring = ctx.createLinearGradient(10, 6, 90, 94);
+      ring.addColorStop(0, "#f6e8bf"); ring.addColorStop(0.5, "#d2b072"); ring.addColorStop(1, "#c0703a");
+      ctx.shadowColor = "rgba(255,122,69,.45)"; ctx.shadowBlur = 22 / k;
+      ctx.fillStyle = ring;
+      ctx.save(); ctx.transform(1, 0, -Math.tan(0.07), 1, 0, 0); ctx.translate(2, 0);
+      for (const d of RING_FULL) ctx.fill(new Path2D(d));
+      ctx.restore();
+      ctx.shadowBlur = 0;
+      const ember = ctx.createLinearGradient(0, 0, 70, 0); ember.addColorStop(0, "#ff7a45"); ember.addColorStop(1, "#f6e8bf");
+      ctx.fillStyle = ember; ctx.fill(new Path2D(LINES_FULL[0]![0]));
+      ctx.fillStyle = "#d2b072"; ctx.fill(new Path2D(LINES_FULL[1]![0]));
+      ctx.restore();
       ctx.shadowBlur = 0; ctx.globalAlpha = 1;
     };
 
