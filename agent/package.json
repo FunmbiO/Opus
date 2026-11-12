@@ -18,6 +18,7 @@
     "demo": "tsx --env-file-if-exists=.env src/cli.ts demo",
     "typecheck": "tsc --noEmit",
     "safety": "node scripts/safety-check.mjs",
+    "test:undo": "tsx scripts/undo-test.ts",
     "check": "npm run typecheck && npm run safety",
     "readtest": "tsx scripts/readtest.ts",
     "password": "tsx --env-file-if-exists=.env scripts/password.ts",
