@@ -614,3 +614,28 @@ body { overscroll-behavior-y: none; }
 .rowbtn:hover small, .rowbtn:hover .big { color: #0A0A09; }
 .panel-head { border-bottom: 2px solid var(--line); }
 .hero, .stage { border-bottom-width: 2px; }
+
+/* ---- Obsidian Pop: signals (each colour means one thing) ---- */
+.banner { background: var(--gold); color: #0A0A09; border: 2px solid var(--line); }
+.banner.warn { background: var(--burgundy); color: #F4F1E8; border-color: var(--burgundy); }
+.banner.warn .btn { background: #F4F1E8; color: #0A0A09; border-color: #F4F1E8; }
+.btn.danger { color: var(--bad); border-color: var(--burgundy); }
+.btn.danger:hover:not(:disabled) { box-shadow: 4px 4px 0 var(--burgundy); }
+.btn.danger-solid, .btn.danger-solid:hover:not(:disabled) { background: var(--burgundy); border-color: var(--burgundy); color: #F4F1E8; }
+.lvl-nearing .meter-note, .lvl-target .meter-note, .lvl-warn .meter-note { color: var(--orange); }
+.lvl-nearing .ruler-fill, .lvl-target .ruler-fill, .lvl-warn .ruler-fill { background: var(--orange); }
+.lvl-alert .ruler-fill { background: var(--burgundy); }
+.ruler-fill { background: var(--gold); }
+.pill.g-warn { background: var(--orange); color: #0A0A09; border-color: var(--orange); }
+.st-new { color: #0A0A09; background: var(--pink); border-color: var(--pink); }
+.st-replied { color: var(--gold); border-color: var(--gold); }
+.st-booked { background: var(--green); border-color: var(--green); color: #0A0A09; }
+.v-review { background: var(--gold); border-color: var(--gold); }
+.v-keep { background: var(--green); color: #0A0A09; border-color: var(--green); }
+.sample { background: var(--pink); }
+.txpend { background: var(--orange); color: #0A0A09; border-color: var(--orange); }
+.next.soon { color: var(--orange); }
+.badge { background: var(--pink); }
+.mode i { width: 8px; height: 8px; }
+.mode.live { color: #0A0A09; background: var(--green); font-weight: 700; padding: 4px 8px; margin: 0 22px; width: fit-content; }
+.mode.live i { background: #0A0A09; }
