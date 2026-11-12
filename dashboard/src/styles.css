@@ -824,3 +824,9 @@ button, a, .chip, .btn, .icon-btn, .nav-item, .rowbtn { touch-action: manipulati
   .txcat { position: relative; }
   .txcat::after { content: ""; position: absolute; inset: -8px -4px; }
 }
+
+/* The 16px floor is what stops iOS zooming the page when you tap a field, so no other rule may undercut it. */
+@media (max-width: 880px) {
+  input, textarea, select { font-size: max(16px, 1rem) !important; }
+  input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="range"]), select { min-height: 44px; }
+}
