@@ -202,6 +202,26 @@ function howToCancel(sub: SubRow): string | null {
 }
 
 /** Records your decision. Approving a cancellation only prepares it: you still do the cancelling. */
+export type UndoResult = "restored" | "not-dismissed" | "duplicate" | "missing";
+
+/**
+ * Put a dismissed approval back in the queue. Only changes the approval's status:
+ * it never sends, cancels or deletes anything. Approved items cannot be undone,
+ * because approving already produced steps or a Gmail draft.
+ */
+export function undoApproval(id: string): UndoResult {
+  const a = get<{ id: string; title: string; subscription_id: string | null; status: string }>("SELECT * FROM approvals WHERE id = ?", id);
+  if (!a) return "missing";
+  if (a.status !== "dismissed") return "not-dismissed";
+  if (a.subscription_id) {
+    const open = get("SELECT id FROM approvals WHERE subscription_id = ? AND status = 'pending' AND id != ?", a.subscription_id, id);
+    if (open) return "duplicate";
+  }
+  run("UPDATE approvals SET status = 'pending', decided_at = NULL WHERE id = ? AND status = 'dismissed'", id);
+  logActivity({ kind: "system", job: "approvals", summary: `You put back in the queue: ${a.title}` });
+  return "restored";
+}
+
 export async function decideApproval(deps: Deps, id: string, decision: "approve" | "dismiss") {
   const a = get<{ id: string; kind: string; title: string; subscription_id: string | null; status: string }>("SELECT * FROM approvals WHERE id = ?", id);
   if (!a || a.status !== "pending") return;
