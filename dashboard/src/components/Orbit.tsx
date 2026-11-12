@@ -92,7 +92,7 @@ export function Orbit({ counts, busy }: { counts: Record<Category, number>; busy
       if (boost > 1.4) {
         for (let k = 0; k < 2; k++) {
           const p = ((t / 1000) * 0.7 + k * 0.5) % 1;
-          ctx.globalAlpha = (1 - p) * 0.55 * Math.min(1, boost - 1); ctx.strokeStyle = colors["--gold"] || "#CFA349"; ctx.lineWidth = 1.5;
+          ctx.globalAlpha = (1 - p) * 0.55 * Math.min(1, boost - 1); ctx.strokeStyle = colors["--gold"] || "#FF5A1F"; ctx.lineWidth = 1.5;
           ctx.beginPath();
           for (let i = 0; i <= 90; i++) { const [x, y] = pos(R * p * 0.95, (i / 90) * Math.PI * 2, 0); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
           ctx.stroke();
@@ -113,7 +113,7 @@ export function Orbit({ counts, busy }: { counts: Record<Category, number>; busy
         }
         const [x, y] = pos(r, p.a, 6 + p.ri * 3);
         ctx.globalAlpha = 0.45 + front * 0.55; ctx.fillStyle = col;
-        ctx.shadowColor = p.ri === 0 ? colors["--gold"] || "#CFA349" : "transparent"; ctx.shadowBlur = p.ri === 0 ? 12 : 0;
+        ctx.shadowColor = p.ri === 0 ? colors["--gold"] || "#FF5A1F" : "transparent"; ctx.shadowBlur = p.ri === 0 ? 12 : 0;
         diamond(x, y, p.size * (0.75 + front * 0.5)); ctx.fill();
         ctx.shadowBlur = 0;
       }
@@ -121,12 +121,12 @@ export function Orbit({ counts, busy }: { counts: Record<Category, number>; busy
       // core
       const pulse = 1 + Math.sin(t / 380) * 0.08 * boost;
       const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, 120 * pulse);
-      g.addColorStop(0, "rgba(207,163,73,.7)"); g.addColorStop(1, "rgba(207,163,73,0)");
+      g.addColorStop(0, "rgba(255,90,31,.7)"); g.addColorStop(1, "rgba(255,90,31,0)");
       ctx.globalAlpha = 1; ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, 120 * pulse, 0, Math.PI * 2); ctx.fill();
       ctx.save(); ctx.translate(cx + mouse.x * 2, cy + mouse.y * 2); ctx.rotate(spin * 0.25);
       const cg = ctx.createLinearGradient(-16, -16, 16, 16);
-      cg.addColorStop(0, "#E8CC8A"); cg.addColorStop(0.5, "#CFA349"); cg.addColorStop(1, "#9C7A2E");
-      ctx.fillStyle = cg; ctx.shadowColor = "rgba(207,163,73,.7)"; ctx.shadowBlur = 18;
+      cg.addColorStop(0, "#FF8A5C"); cg.addColorStop(0.5, "#FF5A1F"); cg.addColorStop(1, "#C93F0A");
+      ctx.fillStyle = cg; ctx.shadowColor = "rgba(255,90,31,.7)"; ctx.shadowBlur = 18;
       ctx.beginPath(); ctx.rect(-13 * pulse, -13 * pulse, 26 * pulse, 26 * pulse); ctx.fill(); ctx.restore();
       ctx.shadowBlur = 0; ctx.globalAlpha = 1;
     };

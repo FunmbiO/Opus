@@ -21,7 +21,7 @@ export function Boot({ onDone }: { onDone: () => void }) {
     <div className={leaving ? "boot-screen leave" : "boot-screen"} onClick={skip} aria-hidden="true">
       <svg viewBox="0 0 120 120" className="boot-mark">
         <defs>
-          <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#E8CC8A" /><stop offset=".5" stopColor="#CFA349" /><stop offset="1" stopColor="#9C7A2E" /></linearGradient>
+          <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#FF8A5C" /><stop offset=".5" stopColor="#FF5A1F" /><stop offset="1" stopColor="#C93F0A" /></linearGradient>
         </defs>
         <path className="m1" pathLength="1" d="M60 6 L114 60 L60 114 L6 60 Z" />
         <path className="m2" pathLength="1" d="M60 30 L90 60 L60 90 L30 60 Z" />
