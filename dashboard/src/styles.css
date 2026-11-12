@@ -585,3 +585,11 @@ body { overscroll-behavior-y: none; }
 .payform label { display: flex; flex-direction: column; gap: 4px; font-size: .8rem; font-weight: 600; color: var(--ink-3); min-width: 0; }
 .payform input { border: 1.5px solid var(--ink); background: var(--paper); color: var(--ink); padding: 9px 10px; font: inherit; min-width: 0; max-width: 100%; }
 @media (max-width: 560px) { .orow { grid-template-columns: 1fr auto; } .orow .soft { grid-column: 1 / -1; order: 3; } }
+
+/* ======== NitroDrp pieces on the original Opus palette ======== */
+:root {
+  --mono: "Space Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --mark: var(--gold); --on-mark: #0a0a0a; --lift: #0a0a0a; --on-green: #ffffff;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --lift: #34342f; --on-green: #000000; --mark: #d2b072; } }
+:root[data-theme="dark"] { --lift: #34342f; --on-green: #000000; --mark: #d2b072; }
