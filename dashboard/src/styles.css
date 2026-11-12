@@ -587,7 +587,7 @@ body { overscroll-behavior-y: none; }
 @media (max-width: 560px) { .orow { grid-template-columns: 1fr auto; } .orow .soft { grid-column: 1 / -1; order: 3; } }
 
 /* ---- Obsidian Pop: type roles ---- */
-.eyebrow, .pill, .badge, .sample, .txpend, kbd, .tally .l, .day, .pal-group, .tl-tick span, .cb-pct, .mode, .ss-row, .cost, .when, .sect, .chip, .tabbar button {
+.eyebrow, .pill, .badge, .sample, .txpend, kbd, .tally .l, .day, .pal-group, .tl-tick span, .cb-pct, .mode, .ss-row, .cost, .when, .sect, .chip {
   font-family: var(--mono);
 }
 .eyebrow, .pill, .badge, .sample, .txpend, .pal-group, .sect { text-transform: uppercase; letter-spacing: .06em; }
@@ -641,3 +641,6 @@ body { overscroll-behavior-y: none; }
 /* panels sit flat; only interactive things lift */
 .panel { box-shadow: none; }
 .panel:hover { box-shadow: 3px 3px 0 var(--line); }
+
+/* tab bar keeps the body face so long labels fit on a phone */
+.tabbar button { font-family: var(--body); letter-spacing: 0; }
