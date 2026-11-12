@@ -596,3 +596,21 @@ body { overscroll-behavior-y: none; }
 .pill, .badge, .sample, .txpend { font-weight: 700; }
 .brand { font-weight: 600; letter-spacing: -.01em; }
 .meter-value, .big, .tally .n, .amt, .tl-total, .cb-amt, .gold-num { font-weight: 600; letter-spacing: -.02em; }
+
+/* ---- Obsidian Pop: hard-edged cards ---- */
+.panel, .alert, .lockcard { background: var(--paper-2); border: 2px solid var(--line); box-shadow: 3px 3px 0 var(--line); }
+.panel { gap: 18px; }
+.alert { border-left-width: 2px; }
+.alert.sev-high { background: var(--bad-soft); box-shadow: 3px 3px 0 var(--burgundy); border-color: var(--burgundy); }
+.alert.sev-medium { box-shadow: 3px 3px 0 var(--orange); border-color: var(--orange); }
+.alert.sev-medium > svg { color: var(--orange); }
+.btn { border-width: 2px; }
+.btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--line); }
+.btn.primary { background: var(--gold); color: #0A0A09; border-color: var(--line); }
+.btn.primary:hover:not(:disabled) { box-shadow: 4px 4px 0 var(--line); }
+.rowbtn, .idea, .chip, .search, .inp { border-width: 2px; }
+.rowbtn { background: var(--paper-2); }
+.rowbtn:hover { background: var(--gold); color: #0A0A09; box-shadow: 4px 4px 0 var(--line); transform: translate(-2px, -2px); }
+.rowbtn:hover small, .rowbtn:hover .big { color: #0A0A09; }
+.panel-head { border-bottom: 2px solid var(--line); }
+.hero, .stage { border-bottom-width: 2px; }
