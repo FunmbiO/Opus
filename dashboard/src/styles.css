@@ -4,8 +4,9 @@
   --gold-grad: linear-gradient(180deg, #a07a34, #6d4f1a);
   --nav-bg: #0a0a09; --nav-ink: #f5f5f0; --nav-dim: #9a9a92;
   --c-jaded: #b4904e; --c-school: #0e5a43; --c-bills: #0a0a0a; --c-personal: #8f8c82; --c-junk: #dcdad1;
-  --display: "Archivo", ui-sans-serif, system-ui, sans-serif;
-  --body: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --display: "Newsreader", Georgia, "Times New Roman", serif;
+  --body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --mono: "Space Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -25,9 +26,9 @@
 html, body { margin: 0; }
 body { background: var(--paper); color: var(--ink); font: 15px/1.55 var(--body); -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; }
 button { font: inherit; color: inherit; cursor: pointer; border-radius: 0; }
-h1, h2, h3, .brand, .big, .meter-value, .amt, .tally .n { font-family: var(--display); font-stretch: 112%; }
-h1 { font-size: clamp(2.2rem, 5.4vw, 4rem); line-height: .98; margin: 6px 0 14px; font-weight: 760; letter-spacing: -.035em; }
-h2 { font-size: 1rem; margin: 0; font-weight: 750; letter-spacing: -.01em; }
+h1, h2, h3, .brand, .big, .meter-value, .amt, .tally .n { font-family: var(--display); }
+h1 { font-size: clamp(2.2rem, 5.4vw, 4rem); line-height: .98; margin: 6px 0 14px; font-weight: 600; letter-spacing: -.02em; }
+h2 { font-size: 1.15rem; margin: 0; font-weight: 600; letter-spacing: -.005em; }
 .soft { color: var(--ink-3); font-weight: 600; }
 .eyebrow { font-size: .82rem; color: var(--ink-3); font-weight: 500; }
 

@@ -83,7 +83,7 @@ export function Orbit({ counts, busy }: { counts: Record<Category, number>; busy
         ctx.stroke(); ctx.setLineDash([]);
         ctx.globalAlpha = 1;
         const [lx, ly] = pos(r, -0.62 - ri * 0.12, 6 + ri * 3);
-        ctx.fillStyle = colors["--ink-2"] || "#aaa"; ctx.font = "600 12px Geist, system-ui, sans-serif";
+        ctx.fillStyle = colors["--ink-2"] || "#aaa"; ctx.font = "600 12px Inter, system-ui, sans-serif";
         ctx.fillText(`${CAT[c].label} ${counts[c]}`, lx + 10, ly + 4);
         ctx.fillStyle = colors[`--c-${c}`] || "#fff"; diamond(lx + 3, ly, 3); ctx.fill();
       });
