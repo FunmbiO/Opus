@@ -828,3 +828,7 @@ button, a, .chip, .btn, .icon-btn, .nav-item, .rowbtn { touch-action: manipulati
   input, textarea, select { font-size: max(16px, 1rem) !important; }
   input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="range"]), select { min-height: 44px; }
 }
+
+/* On the light theme the cream highlight of the O would wash out against the page, so give it a hairline dark edge. */
+:root[data-theme="light"] .topbar .omark { filter: drop-shadow(0 0 .7px rgba(96, 64, 12, .85)); }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .topbar .omark { filter: drop-shadow(0 0 .7px rgba(96, 64, 12, .85)); } }

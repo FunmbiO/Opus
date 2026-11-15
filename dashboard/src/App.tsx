@@ -281,7 +281,7 @@ export default function App() {
     <div className="shell">
       {boot && <Boot onDone={() => setBoot(false)} />}
       <aside className="nav">
-        <div className="brand"><OMark bold size={30} />Opus</div>
+        <div className="brand"><OMark bold size={36} />Opus</div>
         <nav>
           {TABS.map((t) => (
             <button key={t.id} className={tab === t.id ? "nav-item on" : "nav-item"} onClick={() => setTab(t.id)}>
@@ -307,7 +307,7 @@ export default function App() {
 
       <main>
         <div className="topbar">
-          <div className="brand"><OMark bold size={30} />Opus</div>
+          <div className="brand"><OMark bold size={36} />Opus</div>
           <div><button className="icon-btn" onClick={() => { void refresh(); say("Refreshed"); }} aria-label="Refresh"><Icon name="refresh" /></button><button className="icon-btn" onClick={() => setPalette(true)} aria-label="Search"><Icon name="search" /></button><button className="icon-btn" onClick={cycleTheme} aria-label="Change theme"><Icon name={theme === "light" ? "sun" : "moon"} /></button></div>
         </div>
         {!EMBED && <InstallTip />}
