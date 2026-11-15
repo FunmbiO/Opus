@@ -1,4 +1,12 @@
-import { LINES_FULL, RING_FULL } from "./omarkPaths";
+import { LINE_FULL, O_FULL, STOPS, SWASH_FULL } from "./omarkPaths";
+
+/** Built once: Path2D objects are cheap to draw and wasteful to rebuild every frame. */
+const O_PATHS = { o: new Path2D(O_FULL), swash: new Path2D(SWASH_FULL), line: new Path2D(LINE_FULL) };
+const grad = (ctx: CanvasRenderingContext2D, x0: number, y0: number, x1: number, y1: number, stops: readonly (readonly [number, string])[]) => {
+  const g = ctx.createLinearGradient(x0, y0, x1, y1);
+  for (const [o, c] of stops) g.addColorStop(o, c);
+  return g;
+};
 import { useEffect, useRef } from "react";
 import type { Category } from "../types";
 import { CAT } from "../format";
@@ -126,20 +134,13 @@ export function Orbit({ counts, busy }: { counts: Record<Category, number>; busy
       ctx.globalAlpha = 1; ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, 120 * pulse, 0, Math.PI * 2); ctx.fill();
       // the O sits at the centre; it breathes and leans slightly toward the pointer, it does not spin
       ctx.save(); ctx.translate(cx + mouse.x * 2, cy + mouse.y * 2); ctx.rotate(mouse.x * 0.004);
-      const k = (84 * pulse) / 100;
+      const k = (96 * pulse) / 100;
       ctx.scale(k, k); ctx.translate(-50, -50);
-      // gradients live in the current (scaled) space, so define this one in the 0..100 box
-      const ring = ctx.createLinearGradient(10, 6, 90, 94);
-      ring.addColorStop(0, "#f6e8bf"); ring.addColorStop(0.5, "#d2b072"); ring.addColorStop(1, "#c0703a");
-      ctx.shadowColor = "rgba(255,122,69,.45)"; ctx.shadowBlur = 22 / k;
-      ctx.fillStyle = ring;
-      ctx.save(); ctx.transform(1, 0, -Math.tan(0.07), 1, 0, 0); ctx.translate(2, 0);
-      for (const d of RING_FULL) ctx.fill(new Path2D(d));
-      ctx.restore();
-      ctx.shadowBlur = 0;
-      const ember = ctx.createLinearGradient(0, 0, 70, 0); ember.addColorStop(0, "#ff7a45"); ember.addColorStop(1, "#f6e8bf");
-      ctx.fillStyle = ember; ctx.fill(new Path2D(LINES_FULL[0]![0]));
-      ctx.fillStyle = "#d2b072"; ctx.fill(new Path2D(LINES_FULL[1]![0]));
+      // gradients live in the current (scaled) space, so they are defined in the 0..100 box
+      ctx.fillStyle = grad(ctx, 6, 84, 64, 63, STOPS.line); ctx.fill(O_PATHS.line);
+      ctx.fillStyle = grad(ctx, 0, 0, 100, 0, STOPS.swash); ctx.fill(O_PATHS.swash);
+      ctx.shadowColor = "rgba(255,122,69,.4)"; ctx.shadowBlur = 20 / k;
+      ctx.fillStyle = grad(ctx, 10, 20, 92, 85, STOPS.ring); ctx.fill(O_PATHS.o);
       ctx.restore();
       ctx.shadowBlur = 0; ctx.globalAlpha = 1;
     };
