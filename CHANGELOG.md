@@ -1,6 +1,11 @@
 # Changelog
 
 ## Unreleased
+### Logo (redesigned)
+- The O is now calligraphic: thick downstroke, hairline upstroke and an inner curl, with a roofline swash and a finer line across it, in a metallic gold with an ember tip. Drawn by `dashboard/scripts/make-logo.mjs`; replaces the geometric O.
+- Updated everywhere: nav, boot animation (the swash sweeps in), orbit centre, favicon, iPhone and Android icons, and launch screens. `npm run check:logo` keeps the generated files honest.
+- `demo-check` and `EMBED.md` now name `https://olufunmbidev.vercel.app`, the origin `vercel.json` allows.
+
 ### Security
 - Rate limits per caller and route, a cap on concurrent model calls, a Host check (DNS rebinding), a strict CSP and other headers, request timeouts, safe static paths, and generic 500 errors. See `docs/SECURITY.md`.
 - Fixed: a single malformed URL could crash the server. Fixed: email header injection in reply drafts, new drafts and contract emails. Fixed: the static-file check could be fooled by a sibling folder.
