@@ -17,8 +17,8 @@ const dashVercel = JSON.parse(readFileSync(resolve(root, "vercel.json"), "utf8")
 if (!existsSync(dist)) { console.error("dist-demo is missing. Run: npm run build:demo"); process.exit(1); }
 
 // The site that must be able to embed the demo. It comes from your portfolio's own canonical address
-// (https://jaded-works.vercel.app). If your portfolio moves, run: PORTFOLIO_ORIGIN=https://new.example node scripts/demo-check.mjs
-const PORTFOLIO = process.env.PORTFOLIO_ORIGIN ?? "https://jaded-works.vercel.app";
+// (https://olufunmbidev.vercel.app). If your portfolio moves, run: PORTFOLIO_ORIGIN=https://new.example node scripts/demo-check.mjs
+const PORTFOLIO = process.env.PORTFOLIO_ORIGIN ?? "https://olufunmbidev.vercel.app";
 
 let passed = 0;
 const ok = (m) => { passed += 1; console.log(`  ok  ${m}`); };
@@ -131,7 +131,7 @@ try {
   assert.ok(await framed(allowed), `the demo should render inside ${allowed}`);
   ok(`the demo renders inside an iframe on ${allowed}, with the same sandbox your portfolio uses`);
   assert.equal(await framed("https://evil.example"), false, "a stranger's page must not be able to frame it");
-  assert.equal(await framed("https://jaded-works.vercel.app.evil.example"), false, "a look-alike domain must not be able to frame it");
+  assert.equal(await framed("https://olufunmbidev.vercel.app.evil.example"), false, "a look-alike domain must not be able to frame it");
   ok("pages on other sites, including look-alike domains, cannot frame it");
   await ctx.close();
 } finally {

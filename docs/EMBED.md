@@ -53,10 +53,10 @@ Then the iframe, following the pattern your other demos use:
 to taste. `allow-same-origin` is needed (the theme setting uses local storage); `allow-scripts` is needed to run at all.
 
 ## 3. If your portfolio is on a different address
-The demo only allows framing by `https://jaded-works.vercel.app` (your portfolio's canonical address). If you serve it from a
+The demo only allows framing by `https://olufunmbidev.vercel.app` (your portfolio's address). If you serve it from a
 custom domain too, list every origin that should be allowed, then redeploy:
 ```bash
-node dashboard/scripts/set-embed-origin.mjs https://jaded-works.vercel.app https://your-custom-domain.com   # updates both vercel.json files
+node dashboard/scripts/set-embed-origin.mjs https://olufunmbidev.vercel.app https://your-custom-domain.com   # updates both vercel.json files
 ```
 Only exact `https://` origins are accepted. Wildcards are refused on purpose.
 
