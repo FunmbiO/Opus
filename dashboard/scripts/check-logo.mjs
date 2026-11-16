@@ -24,15 +24,21 @@ ok("logo.svg, favicon.svg and omarkPaths.ts match the generator");
 
 // 2. the shapes are sane
 const ts = readFileSync(join(root, "src/components/omarkPaths.ts"), "utf8");
-const paths = [...ts.matchAll(/export const (O_FULL|O_BOLD|SWASH_FULL|SWASH_BOLD|LINE_FULL) = "([^"]+)"/g)];
-assert.equal(paths.length, 5, "expected five shapes");
+const paths = [...ts.matchAll(/export const (RING_FULL|RING_BOLD|CAR_FULL|CAR_BOLD) = "([^"]+)"/g)];
+assert.equal(paths.length, 4, "expected four shapes: the ring and the car, each in a full and a bold version");
 for (const [, name, d] of paths) {
-  assert.ok(/^M[\d. L-]+Z$/.test(d), `${name} has unexpected characters`);
+  assert.ok(/^(M[\d. L-]+Z)+$/.test(d), `${name} has unexpected characters`);
   const nums = d.match(/-?\d+(\.\d+)?/g).map(Number);
   assert.ok(nums.length > 100 && nums.length % 2 === 0, `${name} has an odd number of coordinates`);
   assert.ok(nums.every((x) => Number.isFinite(x) && x >= -1 && x <= 101), `${name} has a coordinate outside the drawing box`);
 }
-ok("all five shapes are valid and stay inside the 0..100 box");
+assert.ok(/export const CLIP_X = \d+;/.test(ts) && /export const HALO = /.test(ts) && /export const STOPS = /.test(ts), "omarkPaths.ts is missing CLIP_X, HALO or STOPS");
+for (const f of ["public/logo.svg", "public/favicon.svg"]) {
+  const svg = readFileSync(join(root, f), "utf8");
+  assert.ok(svg.includes('id="o"') && svg.includes('id="v"') && svg.includes('href="#o"') && svg.includes('href="#v"'), `${f} is missing the ring or the car`);
+  assert.ok(!/<script|onload=|javascript:/i.test(svg), `${f} contains something that could run code`);
+}
+ok("the four shapes are valid and stay inside the 0..100 box, and the SVG files are safe and complete");
 
 // 3. icons and launch screens exist at their stated sizes
 const size = (f) => {

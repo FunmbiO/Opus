@@ -833,5 +833,5 @@ button, a, .chip, .btn, .icon-btn, .nav-item, .rowbtn { touch-action: manipulati
 }
 
 /* On the light theme the cream highlight of the O would wash out against the page, so give it a hairline dark edge. */
-:root[data-theme="light"] .topbar .omark { filter: drop-shadow(0 0 .7px rgba(96, 64, 12, .85)); }
-@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .topbar .omark { filter: drop-shadow(0 0 .7px rgba(96, 64, 12, .85)); } }
+:root[data-theme="light"] .topbar .omark { filter: drop-shadow(0 0 .6px rgba(80, 52, 8, .95)) drop-shadow(0 0 .5px rgba(80, 52, 8, .7)); }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .topbar .omark { filter: drop-shadow(0 0 .6px rgba(80, 52, 8, .95)) drop-shadow(0 0 .5px rgba(80, 52, 8, .7)); } }
