@@ -1,129 +1,125 @@
-// Draws the Opus "O" and writes the shape data. The O is calligraphy: a pen that is thick on the downstroke and a
-// hairline on the upstroke, spiralling in at the end like a flourished capital, with a long hairline swash that
-// sweeps across it like the roofline of the Opus car.
+// Draws the Opus mark: a fine open ring with the Opus car driving through the gap.
 //
-//   node scripts/make-logo.mjs                 writes src/components/omarkPaths.ts, public/logo.svg, public/favicon.svg
+//   node scripts/make-logo.mjs                  writes src/components/omarkPaths.ts, public/logo.svg, public/favicon.svg
 //   OUT_DIR=/some/folder node scripts/make-logo.mjs    writes there instead (for previewing)
 //
-// Everything is in a 0..100 box. Tweak the numbers in PEN and SWASH, rerun, and look at public/logo.svg.
-import { mkdirSync, writeFileSync } from "node:fs";
+// The ring is a pen line that swells from a hairline to its fullest at the lower left and thins out again, leaving a gap
+// at the upper right. The car is the Opus car outline from src/components/CarMark.tsx, turned slightly, scaled to fit,
+// and simplified so the files stay small. The car passes in front of the ring's thin side and behind its thick left
+// stroke, so it reads as driving through. Everything is in a 0..100 box. Tweak the numbers below and rerun.
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 const rad = (d) => (d * Math.PI) / 180;
 const f = (n) => (Math.round(n * 10) / 10).toString();
-const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
 
-// ---------------------------------------------------------------- the O: a pen with thick downstrokes
-const PEN = {
-  cx: 50, cy: 52, rx: 27, ry: 36,   // size of the first loop
-  lean: 13,                          // degrees the letter leans to the right
-  start: 292, sweep: 478,            // the pen starts near the top and goes round counter-clockwise, past a full turn
-  spiral: 0.5,                      // how far the extra turn curls inwards (1 = no curl)
-  thick: 11.6, hair: 0.9,           // widest and thinnest the line gets
-  press: 2.5,                       // how quickly it thickens on the downstroke (higher = sharper contrast)
-  taper: 0.1,                        // how much of each end tapers to a point
-  steps: 360,
+// ---------------------------------------------------------------- the ring
+const RING = {
+  cx: 50, cy: 50, rx: 34, ry: 38,   // size of the ring
+  from: -40, sweep: 336,            // where the pen starts (degrees) and how far it goes round; the rest is the gap
+  hair: 0.7, swell: 3.4, curve: 0.7,// thinnest line, how much it swells, and the shape of the swelling
+  steps: 300,
 };
+// the heavier version for small sizes (nav, favicon), where a hairline would vanish
+const RING_BOLD = { ...RING, hair: 1.9, swell: 6.4, curve: 0.65 };
 
-function penPoint(t, P) {
-  const turned = P.sweep * t;
-  const a = rad(P.start - turned);
-  const k = turned <= 360 ? 1 : 1 - (1 - P.spiral) * smooth(0, 1, (turned - 360) / (P.sweep - 360));
-  const x = P.rx * k * Math.cos(a), y = P.ry * k * Math.sin(a);
-  const c = Math.cos(rad(P.lean)), s = Math.sin(rad(P.lean));
-  return [P.cx + x * c - y * s, P.cy + x * s + y * c];
-}
-
-/** Turns a centre-line and a width function into one closed outline. */
 function ribbon(centre, widthAt) {
   const left = [], right = [];
   for (let i = 0; i < centre.length; i++) {
     const p = centre[i], q = centre[Math.min(centre.length - 1, i + 1)], o = centre[Math.max(0, i - 1)];
     let tx = q[0] - o[0], ty = q[1] - o[1];
     const len = Math.hypot(tx, ty) || 1; tx /= len; ty /= len;
-    const w = widthAt(i / (centre.length - 1), tx, ty) / 2;
+    const w = widthAt(i / (centre.length - 1)) / 2;
     left.push([p[0] - ty * w, p[1] + tx * w]);
     right.push([p[0] + ty * w, p[1] - tx * w]);
   }
-  const pts = [...left, ...right.reverse()];
-  return "M" + pts.map(([x, y]) => `${f(x)} ${f(y)}`).join("L") + "Z";
+  return [...left, ...right.reverse()];
 }
+const toPath = (pts) => "M" + pts.map(([x, y]) => `${f(x)} ${f(y)}`).join("L") + "Z";
 
-function theO(P = PEN) {
-  const centre = Array.from({ length: P.steps + 1 }, (_, i) => penPoint(i / P.steps, P));
-  return ribbon(centre, (t, tx, ty) => {
-    const down = Math.max(0, ty);                            // moving downward = pressing down
-    const turned = P.sweep * t;
-    const lift = turned <= 360 ? 1 : 1 - 0.9 * smooth(0, 0.3, (turned - 360) / (P.sweep - 360)); // the curl is a hairline
-    const w = P.hair + (P.thick - P.hair) * Math.pow(down, P.press) * lift;
-    const env = smooth(0, P.taper, t) * (1 - smooth(1 - P.taper * 1.6, 1, t)); // pointed at both ends
-    return Math.max(0.25, w * (0.18 + 0.82 * env));
+function ring(R) {
+  const centre = Array.from({ length: R.steps }, (_, i) => {
+    const a = rad(R.from - (i / (R.steps - 1)) * R.sweep);
+    return [R.cx + R.rx * Math.cos(a), R.cy + R.ry * Math.sin(a)];
   });
+  return toPath(ribbon(centre, (t) => R.hair + R.swell * Math.pow(Math.sin(Math.PI * Math.min(1, t * 1.04 + 0.01)), R.curve)));
 }
 
-// ---------------------------------------------------------------- the swash: a pointed pen, like the car's roofline
-const SWASH = {
-  // a long low sweep from the lower left, rising over the letter and tapering away to the right
-  pts: [[0, 74], [16, 69], [36, 56], [57, 42], [76, 35], [90, 37], [100, 45]],
-  width: 2.3, hair: 0.45, steps: 220,
-};
+// ---------------------------------------------------------------- the car
+const CAR = { x: 50, y: 60, scale: 0.172, rot: -8, simplify: 0.045 };
+const carSrc = readFileSync(new URL("../src/components/CarMark.tsx", import.meta.url), "utf8");
+const carData = (name) => new RegExp(`const ${name} = "([^"]+)"`).exec(carSrc)[1];
 
-function bezierThrough(pts, steps) {
-  // Catmull-Rom through the points, so the swash passes smoothly through each one
-  const out = [];
-  const n = pts.length;
-  for (let s = 0; s < n - 1; s++) {
-    const p0 = pts[Math.max(0, s - 1)], p1 = pts[s], p2 = pts[s + 1], p3 = pts[Math.min(n - 1, s + 2)];
-    const per = Math.round(steps / (n - 1));
-    for (let i = 0; i < per; i++) {
-      const t = i / per, t2 = t * t, t3 = t2 * t;
-      out.push([0, 1].map((k) => 0.5 * ((2 * p1[k]) + (-p0[k] + p2[k]) * t + (2 * p0[k] - 5 * p1[k] + 4 * p2[k] - p3[k]) * t2 + (-p0[k] + 3 * p1[k] - 3 * p2[k] + p3[k]) * t3)));
+/** Ramer-Douglas-Peucker: drops points that lie within eps of the line between their neighbours. */
+function simplify(pts, eps) {
+  if (pts.length < 3) return pts;
+  const keep = new Uint8Array(pts.length); keep[0] = keep[pts.length - 1] = 1;
+  const stack = [[0, pts.length - 1]];
+  while (stack.length) {
+    const [a, b] = stack.pop();
+    let worst = -1, at = -1;
+    const [ax, ay] = pts[a], [bx, by] = pts[b], dx = bx - ax, dy = by - ay, len = Math.hypot(dx, dy) || 1;
+    for (let i = a + 1; i < b; i++) {
+      const d = Math.abs((pts[i][0] - ax) * dy - (pts[i][1] - ay) * dx) / len;
+      if (d > worst) { worst = d; at = i; }
     }
+    if (worst > eps) { keep[at] = 1; stack.push([a, at], [at, b]); }
   }
-  out.push(pts[n - 1]);
-  return out;
+  return pts.filter((_, i) => keep[i]);
 }
 
-// a second, finer line underneath, like the car's lower body lines
-const LINE2 = { pts: [[6, 84], [26, 80], [46, 72], [64, 63]], width: 1.1, hair: 0.3, steps: 140 };
-
-function swash(S = SWASH) {
-  const centre = bezierThrough(S.pts, S.steps);
-  return ribbon(centre, (t) => S.hair + S.width * Math.pow(Math.sin(Math.PI * Math.pow(t, 0.8)), 1.4));
+function car(name) {
+  const subs = carData(name).split("M").slice(1).map((s) => s.replace("Z", "").split("L").map((p) => p.trim().split(/\s+/).map(Number)));
+  const all = subs.flat();
+  const xs = all.map((p) => p[0]), ys = all.map((p) => p[1]);
+  const cx = (Math.min(...xs) + Math.max(...xs)) / 2, cy = (Math.min(...ys) + Math.max(...ys)) / 2;
+  const c = Math.cos(rad(CAR.rot)), s = Math.sin(rad(CAR.rot));
+  const place = ([x, y]) => { const px = (x - cx) * CAR.scale, py = (y - cy) * CAR.scale; return [CAR.x + px * c - py * s, CAR.y + px * s + py * c]; };
+  return subs.map((sub) => toPath(simplify(sub.map(place), CAR.simplify))).join("");
 }
 
-// ---------------------------------------------------------------- output
-const O = theO();
-const SW = swash();
-const BOLD = theO({ ...PEN, thick: 17.5, hair: 3.1, press: 1.6 });
-const SW_BOLD = swash({ ...SWASH, width: 4.2, hair: 1.1 });
-const L2 = swash(LINE2);
-
-// Colours, shared by the SVG mark, the canvas orbit and the icons. Each is [position 0..1, colour].
+// ---------------------------------------------------------------- colours and the weave
 const STOPS = {
-  ring: [[0, "#a9772f"], [0.13, "#f8ecc6"], [0.3, "#d9b877"], [0.62, "#c88a45"], [1, "#b8692f"]],  // metallic ribbon
-  swash: [[0, "#ff7a45"], [0.6, "#d2b072"], [1, "#f6e8bf"]],                                         // ember, then gold
-  line: [[0, "#b8863e"], [1, "#f1dfa8"]],
+  ring: [[0, "#a9772f"], [0.13, "#f8ecc6"], [0.3, "#d9b877"], [0.62, "#c88a45"], [1, "#b8692f"]], // metallic gold
+  car: [[0, "#ff7a45"], [0.42, "#e0aa5c"], [1, "#f1d79a"]],                                       // ember tail lights, then gold
 };
+const GRAD = { ring: { x1: 10, y1: 22, x2: 92, y2: 84 }, car: { x1: 2, y1: 0, x2: 98, y2: 0 } }; // absolute, so every part matches
+const CLIP_X = 33;   // left of this the ring is redrawn over the car, so the car passes behind the thick stroke
+const HALO = { full: 1.2, bold: 1.6 }; // the car's dark edge, which keeps it distinct where it crosses the ring
+
+const O = ring(RING), OB = ring(RING_BOLD);
+const CF = car("FULL"), CB = car("BOLD");
+
 const stops = (k) => STOPS[k].map(([o, c]) => `<stop offset="${o}" stop-color="${c}"/>`).join("");
-const defs = (id = "") => `<defs><linearGradient id="r${id}" x1="0" y1=".15" x2="1" y2=".85">${stops("ring")}</linearGradient><linearGradient id="a${id}" x1="0" y1="0" x2="1" y2="0">${stops("swash")}</linearGradient><linearGradient id="b${id}" x1="0" y1="0" x2="1" y2="0">${stops("line")}</linearGradient></defs>`;
-const mark = (o, sw, id = "", l2 = "") => `${defs(id)}${l2 ? `<path fill="url(#b${id})" d="${l2}"/>` : ""}<path fill="url(#a${id})" d="${sw}"/><path fill="url(#r${id})" d="${o}"/>`;
+const grad = (id, k) => `<linearGradient id="${id}" gradientUnits="userSpaceOnUse" x1="${GRAD[k].x1}" y1="${GRAD[k].y1}" x2="${GRAD[k].x2}" y2="${GRAD[k].y2}">${stops(k)}</linearGradient>`;
+/** The whole mark as SVG. Shapes are defined once and reused, so the files stay small. */
+const mark = (ringD, carD, halo) =>
+  `<defs>${grad("r", "ring")}${grad("c", "car")}<clipPath id="l"><rect x="0" y="0" width="${CLIP_X}" height="100"/></clipPath>` +
+  `<path id="o" d="${ringD}"/><path id="v" d="${carD}"/></defs>` +
+  `<use href="#o" fill="url(#r)"/>` +
+  `<use href="#v" fill="#0a0a0a" stroke="#0a0a0a" stroke-width="${halo}" stroke-linejoin="round"/>` +
+  `<use href="#v" fill="url(#c)"/>` +
+  `<use href="#o" fill="url(#r)" clip-path="url(#l)"/>`;
 
 const dir = process.env.OUT_DIR ?? new URL("..", import.meta.url).pathname;
 const at = (p) => (process.env.OUT_DIR ? `${dir}/${p.split("/").pop()}` : `${dir}${p}`);
 if (process.env.OUT_DIR) mkdirSync(dir, { recursive: true });
 
-writeFileSync(at("public/logo.svg"), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">${mark(O, SW, "", L2)}</svg>\n`);
-writeFileSync(at("public/favicon.svg"), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="22" fill="#0a0a0a"/>${mark(BOLD, SW_BOLD)}</svg>\n`);
+writeFileSync(at("public/logo.svg"), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">${mark(O, CF, HALO.full)}</svg>\n`);
+writeFileSync(at("public/favicon.svg"), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="22" fill="#0a0a0a"/>${mark(OB, CB, HALO.bold)}</svg>\n`);
 writeFileSync(at("src/components/omarkPaths.ts"), `/**
- * Shape data for the Opus O, shared by the SVG mark and the canvas orbit. Coordinates are in a 0..100 box.
+ * Shape data for the Opus mark, shared by the SVG mark and the canvas orbit. Coordinates are in a 0..100 box.
  * GENERATED by scripts/make-logo.mjs. Change the numbers there, not here.
  */
-export const O_FULL = "${O}";
-export const O_BOLD = "${BOLD}";
-export const SWASH_FULL = "${SW}";
-export const SWASH_BOLD = "${SW_BOLD}";
-export const LINE_FULL = "${L2}";
-/** Colour stops: [position 0..1, colour]. */
+export const RING_FULL = "${O}";
+export const RING_BOLD = "${OB}";
+export const CAR_FULL = "${CF}";
+export const CAR_BOLD = "${CB}";
+/** The car's dark edge, in drawing units, for the full and the bold version. */
+export const HALO = ${JSON.stringify(HALO)} as const;
+/** Left of this x, the ring is drawn again over the car, so the car passes behind the thick left stroke. */
+export const CLIP_X = ${CLIP_X};
+/** Colour stops: [position 0..1, colour]. Gradients run in absolute drawing coordinates, so all parts match. */
 export const STOPS = ${JSON.stringify(STOPS)} as const;
+export const GRAD = ${JSON.stringify(GRAD)} as const;
 `);
-console.log(`wrote logo (${(O.length + SW.length) >> 10} KB of path data) to ${dir}`);
+console.log(`wrote the mark: ring ${O.length} + car ${CF.length} chars (full), ${OB.length} + ${CB.length} (bold), to ${dir}`);
