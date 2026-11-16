@@ -718,11 +718,14 @@ body { background-image: radial-gradient(color-mix(in srgb, var(--ink) 9%, trans
 .aq-undobar b { font-weight: 700; } .aq-undobar kbd { margin-left: 6px; }
 
 /* ---- the O mark ---- */
-.omark { display: block; flex: none; overflow: visible; }
+.omark { display: block; flex: none; overflow: visible; --mark-knock: #0a0a0a; }
+.omark-halo { fill: var(--mark-knock); stroke: var(--mark-knock); }
+.topbar .omark { --mark-knock: var(--paper); }
 
 /* boot: the O settles in, the speed lines sweep in from the left */
 .boot-o { filter: drop-shadow(0 0 24px rgba(255,122,69,.28)); animation: o-in 1s cubic-bezier(.2,.8,.2,1) both; }
-.boot-o .omark-swash { animation: o-swash 1.1s .35s cubic-bezier(.3,.7,.2,1) both; }
+.boot-o { --mark-knock: #0a0a0a; }
+.boot-o .omark-car { animation: o-swash 1.2s .35s cubic-bezier(.3,.7,.2,1) both; }
 @keyframes o-in { from { opacity: 0; transform: scale(.86); } to { opacity: 1; transform: none; } }
 @keyframes o-swash { from { clip-path: inset(-4% 100% -4% 0); } to { clip-path: inset(-4% -4% -4% 0); } }
 
