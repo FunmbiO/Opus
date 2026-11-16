@@ -2,8 +2,8 @@
 
 ## Unreleased
 ### Logo (redesigned)
-- The O is now calligraphic: thick downstroke, hairline upstroke and an inner curl, with a roofline swash and a finer line across it, in a metallic gold with an ember tip. Drawn by `dashboard/scripts/make-logo.mjs`; replaces the geometric O.
-- Updated everywhere: nav, boot animation (the swash sweeps in), orbit centre, favicon, iPhone and Android icons, and launch screens. `npm run check:logo` keeps the generated files honest.
+- New mark: a fine open ring with the Opus car driving through the gap, in front of the ring's thin side and behind its thick left stroke. Gold with a metallic highlight and an ember tail. Drawn by `dashboard/scripts/make-logo.mjs` from the car outline in `CarMark.tsx`; replaces the diamond and the earlier script O.
+- Updated everywhere: nav, boot animation (the car drives in), orbit centre, favicon, iPhone and Android icons, and launch screens. `npm run check:logo` keeps the generated files honest.
 - `demo-check` and `EMBED.md` now name `https://olufunmbidev.vercel.app`, the origin `vercel.json` allows.
 
 ### Security
