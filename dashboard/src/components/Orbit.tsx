@@ -1,11 +1,11 @@
-import { LINE_FULL, O_FULL, STOPS, SWASH_FULL } from "./omarkPaths";
+import { CAR_FULL, CLIP_X, GRAD, HALO, RING_FULL, STOPS } from "./omarkPaths";
 
 /** Built once: Path2D objects are cheap to draw and wasteful to rebuild every frame. */
-const O_PATHS = { o: new Path2D(O_FULL), swash: new Path2D(SWASH_FULL), line: new Path2D(LINE_FULL) };
-const grad = (ctx: CanvasRenderingContext2D, x0: number, y0: number, x1: number, y1: number, stops: readonly (readonly [number, string])[]) => {
-  const g = ctx.createLinearGradient(x0, y0, x1, y1);
-  for (const [o, c] of stops) g.addColorStop(o, c);
-  return g;
+const MARK = { ring: new Path2D(RING_FULL), car: new Path2D(CAR_FULL) };
+const grad = (ctx: CanvasRenderingContext2D, g: { x1: number; y1: number; x2: number; y2: number }, stops: readonly (readonly [number, string])[]) => {
+  const k = ctx.createLinearGradient(g.x1, g.y1, g.x2, g.y2);
+  for (const [o, c] of stops) k.addColorStop(o, c);
+  return k;
 };
 import { useEffect, useRef } from "react";
 import type { Category } from "../types";
@@ -37,7 +37,7 @@ export function Orbit({ counts, busy }: { counts: Record<Category, number>; busy
     const colors: Record<string, string> = {};
     const readColors = () => {
       const cs = getComputedStyle(cv);
-      for (const n of ["--hair", "--ink", "--ink-2", "--ink-3", "--gold", ...RINGS.map((c) => `--c-${c}`)]) colors[n] = cs.getPropertyValue(n).trim();
+      for (const n of ["--paper", "--hair", "--ink", "--ink-2", "--ink-3", "--gold", ...RINGS.map((c) => `--c-${c}`)]) colors[n] = cs.getPropertyValue(n).trim();
     };
 
     const parts: P[] = RINGS.flatMap((c, ri) =>
@@ -132,15 +132,21 @@ export function Orbit({ counts, busy }: { counts: Record<Category, number>; busy
       const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, 120 * pulse);
       g.addColorStop(0, "rgba(210,176,114,.7)"); g.addColorStop(1, "rgba(210,176,114,0)");
       ctx.globalAlpha = 1; ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, 120 * pulse, 0, Math.PI * 2); ctx.fill();
-      // the O sits at the centre; it breathes and leans slightly toward the pointer, it does not spin
+      // the mark sits at the centre; it breathes and leans slightly toward the pointer
       ctx.save(); ctx.translate(cx + mouse.x * 2, cy + mouse.y * 2); ctx.rotate(mouse.x * 0.004);
       const k = (96 * pulse) / 100;
       ctx.scale(k, k); ctx.translate(-50, -50);
-      // gradients live in the current (scaled) space, so they are defined in the 0..100 box
-      ctx.fillStyle = grad(ctx, 6, 84, 64, 63, STOPS.line); ctx.fill(O_PATHS.line);
-      ctx.fillStyle = grad(ctx, 0, 0, 100, 0, STOPS.swash); ctx.fill(O_PATHS.swash);
-      ctx.shadowColor = "rgba(255,122,69,.4)"; ctx.shadowBlur = 20 / k;
-      ctx.fillStyle = grad(ctx, 10, 20, 92, 85, STOPS.ring); ctx.fill(O_PATHS.o);
+      const ringFill = grad(ctx, GRAD.ring, STOPS.ring), carFill = grad(ctx, GRAD.car, STOPS.car);
+      ctx.shadowColor = "rgba(255,122,69,.35)"; ctx.shadowBlur = 18 / k;
+      ctx.fillStyle = ringFill; ctx.fill(MARK.ring);
+      ctx.shadowBlur = 0;
+      // the car: a dark edge first (the page colour), then the car itself, so it stays distinct where it crosses the ring
+      const knock = colors["--paper"] || "#0a0a0a";
+      ctx.lineJoin = "round"; ctx.lineWidth = HALO.full; ctx.strokeStyle = knock; ctx.fillStyle = knock;
+      ctx.fill(MARK.car); ctx.stroke(MARK.car);
+      ctx.fillStyle = carFill; ctx.fill(MARK.car);
+      // the ring's thick left stroke goes back over the car, so the car passes behind it
+      ctx.save(); ctx.beginPath(); ctx.rect(0, 0, CLIP_X, 100); ctx.clip(); ctx.fillStyle = ringFill; ctx.fill(MARK.ring); ctx.restore();
       ctx.restore();
       ctx.shadowBlur = 0; ctx.globalAlpha = 1;
     };
