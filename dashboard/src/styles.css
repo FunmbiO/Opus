@@ -486,7 +486,7 @@ body { overscroll-behavior-y: none; }
 .auth-car { width: min(320px, 80%); margin: 0 auto 8px; }
 .stage-car { width: 210px; margin: 0 0 14px -4px; opacity: .9; }
 @media (max-width: 880px) { .stage-car { width: 160px; } }
-@media (prefers-reduced-motion: reduce) { /* the pale gold needs more weight on a light page */
+/* the pale gold needs more weight on a light page */
 :root[data-theme="light"] .stage-car { filter: brightness(.62) saturate(1.3); }
 @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .stage-car { filter: brightness(.62) saturate(1.3); } }
 
