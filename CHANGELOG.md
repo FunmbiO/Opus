@@ -3,8 +3,12 @@
 ## Unreleased
 ### Logo (redesigned)
 - New mark: a fine open ring with the Opus car driving through the gap, in front of the ring's thin side and behind its thick left stroke. Gold with a metallic highlight and an ember tail. Drawn by `dashboard/scripts/make-logo.mjs` from the car outline in `CarMark.tsx`; replaces the diamond and the earlier script O.
-- Updated everywhere: nav, boot animation (the car drives in), orbit centre, favicon, iPhone and Android icons, and launch screens. `npm run check:logo` keeps the generated files honest.
+- Updated everywhere: nav, boot animation, orbit centre, favicon, iPhone and Android icons, and launch screens. `npm run check:logo` keeps the generated files honest.
 - `demo-check` and `EMBED.md` now name `https://olufunmbidev.vercel.app`, the origin `vercel.json` allows.
+
+### Boot screen
+- The opening animation is now just the mark and the name "OPUS": the tagline, the gradient line and the separate car are gone, and it ends a little sooner.
+- `npm run build` now fails if `styles.css` has unbalanced braces (a stray brace can silently disable every rule after it).
 
 ### Security
 - Rate limits per caller and route, a cap on concurrent model calls, a Host check (DNS rebinding), a strict CSP and other headers, request timeouts, safe static paths, and generic 500 errors. See `docs/SECURITY.md`.
