@@ -5,12 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "build": "tsc --noEmit && node scripts/check-css.mjs && vite build",
     "build:preview": "tsc --noEmit && vite build --mode preview",
     "typecheck": "tsc --noEmit",
-    "build:demo": "tsc --noEmit && vite build --mode demo",
+    "build:demo": "tsc --noEmit && node scripts/check-css.mjs && vite build --mode demo",
     "check:demo": "npm run build:demo && node scripts/demo-check.mjs",
-    "check:logo": "node scripts/check-logo.mjs"
+    "check:logo": "node scripts/check-logo.mjs",
+    "check:css": "node scripts/check-css.mjs"
   },
   "dependencies": {
     "react": "^19.3.0",
